@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アウトプットイメージ ─ 不動産管理業務AI自動化</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #1a1a1a;
+    line-height: 1.6;
+    background: #f5f5f5;
+    font-size: 14px;
+  }
+
+  /* ===== Cover ===== */
+  .cover {
+    background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    color: #fff;
+    padding: 60px 40px;
+    text-align: center;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cover h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+  .cover .sub { font-size: 18px; opacity: .85; margin-bottom: 32px; }
+  .cover .desc { font-size: 14px; opacity: .7; max-width: 600px; margin: 0 auto; }
+
+  /* ===== Section wrapper ===== */
+  .section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a73e8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .section h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #202124;
+    margin-bottom: 8px;
+  }
+  .section .lead {
+    font-size: 14px;
+    color: #5f6368;
+    margin-bottom: 24px;
+    max-width: 700px;
+  }
+
+  /* ===== Flow overview ===== */
+  .flow-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .flow-node {
+    flex: 1;
+    min-width: 130px;
+    text-align: center;
+    padding: 12px 8px;
+  }
+  .flow-node .icon { font-size: 28px; margin-bottom: 6px; }
+  .flow-node .label { font-size: 12px; font-weight: 600; color: #202124; }
+  .flow-node .sub-label { font-size: 11px; color: #5f6368; margin-top: 2px; }
+  .flow-arrow {
+    flex-shrink: 0;
+    color: #1a73e8;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 0 4px;
+  }
+
+  /* ===== Mock browser chrome ===== */
+  .mock-window {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.12);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .mock-titlebar {
+    background: #dee1e6;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mock-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .mock-dot.r { background: #ed6a5e; }
+  .mock-dot.y { background: #f5bf4f; }
+  .mock-dot.g { background: #62c554; }
+  .mock-urlbar {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #5f6368;
+    margin-left: 12px;
+  }
+  .mock-body { padding: 0; }
+
+  /* ===== Google Drive mock ===== */
+  .gdrive-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e8eaed;
+  }
+  .gdrive-header .logo {
+    width: 28px; height: 28px;
+    background: #1a73e8;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .gdrive-header .title { font-size: 18px; color: #202124; }
+  .gdrive-path {
+    padding: 10px 20px;
+    font-size: 13px;
+    color: #5f6368;
+    border-bottom: 1px solid #f1f3f4;
+  }
+  .gdrive-path span { color: #1a73e8; cursor: pointer; }
+  .gdrive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 20px;
+  }
+  .gdrive-item {
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    text-align: center;
+    padding: 16px 8px 12px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .gdrive-item:hover { background: #e8f0fe; }
+  .gdrive-item .ficon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .gdrive-item .fname {
+    font-size: 12px;
+    color: #202124;
+    word-break: break-all;
+  }
+  .gdrive-item .fdate { font-size: 10px; color: #80868b; margin-top: 2px; }
+  .gdrive-folder .ficon { color: #5f6368; }
+  .gdrive-pdf .ficon { color: #ea4335; }
+  .gdrive-img .ficon { color: #34a853; }
+
+  /* ===== Spreadsheet mock ===== */
+  .gs-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #e8eaed;
+  }
+  .gs-header .logo {
+    width: 24px; height: 24px;
+    background: #0f9d58;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .gs-header .title { font-size: 16px; color: #202124; font-weight: 500; }
+  .gs-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 16px;
+    border-bottom: 1px solid #e8eaed;
+    background: #f9fbfd;
+    flex-wrap: wrap;
+  }
+  .gs-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background .15s;
+  }
+  .gs-btn-primary { background: #1a73e8; color: #fff; }
+  .gs-btn-primary:hover { background: #1557b0; }
+  .gs-btn-secondary { background: #e8eaed; color: #202124; }
+  .gs-btn-secondary:hover { background: #d2d5d9; }
+  .gs-btn-success { background: #0f9d58; color: #fff; }
+  .gs-btn-success:hover { background: #0b8043; }
+  .gs-btn-warning { background: #f9ab00; color: #202124; }
+  .gs-btn-warning:hover { background: #e69500; }
+  .gs-tabs {
+    display: flex;
+    border-top: 1px solid #e8eaed;
+    background: #f9fbfd;
+  }
+  .gs-tab {
+    padding: 6px 20px;
+    font-size: 12px;
+    color: #5f6368;
+    border-right: 1px solid #e8eaed;
+    cursor: pointer;
+  }
+  .gs-tab.active {
+    background: #fff;
+    color: #202124;
+    font-weight: 600;
+    border-bottom: 2px solid #1a73e8;
+  }
+
+  /* ===== Spreadsheet table ===== */
+  .gs-table-wrap {
+    overflow-x: auto;
+    font-size: 12px;
+  }
+  .gs-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+  .gs-table th, .gs-table td {
+    border: 1px solid #e2e5e8;
+    padding: 5px 8px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .gs-table th {
+    background: #f1f3f4;
+    font-weight: 600;
+    color: #202124;
+    position: sticky;
+    top: 0;
+  }
+  .gs-table .row-header {
+    background: #f8f9fa;
+    color: #80868b;
+    width: 32px;
+    text-align: center;
+    font-size: 11px;
+  }
+  .gs-table .col-header {
+    text-align: center;
+    color: #80868b;
+    font-weight: 400;
+    font-size: 11px;
+  }
+  .gs-table .highlight { background: #e6f4ea; }
+  .gs-table .pending { background: #fce8e6; }
+  .gs-table .auto-filled { background: #e8f0fe; }
+  .status-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .status-ok { background: #e6f4ea; color: #137333; }
+  .status-pending { background: #fce8e6; color: #c5221f; }
+  .status-review { background: #fef7e0; color: #e37400; }
+  .status-auto { background: #e8f0fe; color: #1967d2; }
+
+  /* ===== Report mock ===== */
+  .report-wrap {
+    background: #fff;
+    padding: 40px;
+    font-size: 13px;
+  }
+  .report-header {
+    border-bottom: 3px solid #202124;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .report-header h2 { font-size: 20px; color: #202124; margin-bottom: 4px; }
+  .report-header .meta { color: #5f6368; font-size: 12px; }
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 12px;
+  }
+  .report-table th, .report-table td {
+    border: 1px solid #dadce0;
+    padding: 6px 10px;
+    text-align: left;
+  }
+  .report-table th { background: #f1f3f4; font-weight: 600; }
+  .report-table .right { text-align: right; }
+  .report-table .total-row { background: #e8eaed; font-weight: 700; }
+  .report-table .sub-total { background: #f8f9fa; font-weight: 600; }
+
+  /* ===== Annotations ===== */
+  .annotation {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1a73e8;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 4px;
+  }
+  .annotation.green { background: #0f9d58; }
+  .annotation.orange { background: #f9ab00; color: #202124; }
+  .annotation.red { background: #ea4335; }
+
+  .callout-box {
+    background: #e8f0fe;
+    border-left: 4px solid #1a73e8;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: #174ea6;
+  }
+  .callout-box strong { color: #1a73e8; }
+  .callout-box.green { background: #e6f4ea; border-color: #0f9d58; color: #137333; }
+  .callout-box.green strong { color: #0f9d58; }
+  .callout-box.orange { background: #fef7e0; border-color: #f9ab00; color: #7c4d12; }
+
+  .divider-line {
+    border: none;
+    border-top: 1px solid #dadce0;
+    margin: 40px 0;
+  }
+
+  /* ===== Print ===== */
+  @media print {
+    body { background: #fff; }
+    .mock-window { box-shadow: 0 1px 3px rgba(0,0,0,.1); break-inside: avoid; }
+    .section { padding: 24px 0; }
+    .cover { min-height: auto; padding: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================= -->
+<!-- COVER                                     -->
+<!-- ========================================= -->
+<div class="cover">
+  <h1>アウトプットイメージ</h1>
+  <div class="sub">不動産管理業務 AI自動化プロジェクト</div>
+  <div class="desc">
+    「こんなものを作りたい」というイメージ資料です。<br>
+    実際の画面はヒアリング内容をもとに設計しますので、<br>
+    現在の運用との違いや「こうしてほしい」等のご意見をいただけると助かります。
+  </div>
+</div>
+
+<!-- ========================================= -->
+<!-- FLOW OVERVIEW                             -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">全体フロー</div>
+  <h2>システムの流れ</h2>
+  <p class="lead">請求書をフォルダに入れるだけで、AI が自動読取 → スプレッドシートに転記。ボタン一つでオーナー別レポートや請求書を出力します。</p>
+
+  <div class="flow-bar">
+    <div class="flow-node">
+      <div class="icon" style="color:#5f6368;">&#128193;</div>
+      <div class="label">Google Drive</div>
+      <div class="sub-label">請求書をアップロード</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="icon" style="color:#f9ab00;">&#9881;</div>
+      <div class="label">GAS バッチ</div>
+      <div class="sub-label">定期実行 or 手動実行</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="icon" style="color:#ea4335;">&#129302;</div>
+      <div class="label">AI OCR + LLM</div>
+      <div class="sub-label">文字認識 &amp; 構造化</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="icon" style="color:#0f9d58;">&#128202;</div>
+      <div class="label">スプレッドシート</div>
+      <div class="sub-label">自動転記 → 人が確認</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="icon" style="color:#1a73e8;">&#128196;</div>
+      <div class="label">レポート / 請求書</div>
+      <div class="sub-label">ボタンで自動生成</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-node">
+      <div class="icon" style="color:#7b1fa2;">&#128231;</div>
+      <div class="label">メール送付</div>
+      <div class="sub-label">オーナーに自動送信</div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <strong>ポイント:</strong>
+    皆さまの操作は「フォルダに請求書を入れる」「確認してOKする」「ボタンを押す」の3つだけです。
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- SCREEN 1: Google Drive                    -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">STEP 1</div>
+  <h2>Google Drive ─ 請求書アップロード</h2>
+  <p class="lead">請求書（PDF・写真）をこのフォルダに入れるだけ。スキャンアプリからの直接保存も可能です。</p>
+
+  <div class="mock-window">
+    <div class="mock-titlebar">
+      <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+      <div class="mock-urlbar">drive.google.com/drive/folders/property-management-invoices</div>
+    </div>
+    <div class="mock-body">
+      <div class="gdrive-header">
+        <div class="logo">D</div>
+        <div class="title">Property Management</div>
+      </div>
+      <div class="gdrive-path">
+        <span>マイドライブ</span> &gt; <span>不動産管理</span> &gt; <span>請求書_受領</span> &gt; <strong>2026年05月</strong>
+      </div>
+      <div class="gdrive-grid">
+        <div class="gdrive-item gdrive-pdf">
+          <span class="ficon">&#128196;</span>
+          <div class="fname">水道代_UnitA-301_May2026.pdf</div>
+          <div class="fdate">2026/05/15</div>
+        </div>
+        <div class="gdrive-item gdrive-img">
+          <span class="ficon">&#128247;</span>
+          <div class="fname">修繕費_UnitB-102_見積.jpg</div>
+          <div class="fdate">2026/05/14</div>
+        </div>
+        <div class="gdrive-item gdrive-pdf">
+          <span class="ficon">&#128196;</span>
+          <div class="fname">管理費_BuildingC_May.pdf</div>
+          <div class="fdate">2026/05/13</div>
+        </div>
+        <div class="gdrive-item gdrive-pdf">
+          <span class="ficon">&#128196;</span>
+          <div class="fname">保険料_UnitA-301_年次.pdf</div>
+          <div class="fdate">2026/05/12</div>
+        </div>
+        <div class="gdrive-item gdrive-img">
+          <span class="ficon">&#128247;</span>
+          <div class="fname">電気代_UnitD-205_receipt.png</div>
+          <div class="fdate">2026/05/11</div>
+        </div>
+        <div class="gdrive-item gdrive-pdf">
+          <span class="ficon">&#128196;</span>
+          <div class="fname">エアコン修理_UnitB-102.pdf</div>
+          <div class="fdate">2026/05/10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-box green">
+    <strong>運用イメージ:</strong>
+    月別フォルダ（2026年05月 等）に請求書をドラッグ＆ドロップ、またはスマホのスキャンアプリから直接保存します。PDF でも写真でも OK です。
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- SCREEN 2: Main spreadsheet                -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">STEP 2</div>
+  <h2>スプレッドシート ─ AI自動読取結果</h2>
+  <p class="lead">GASのバッチ処理がDriveの新規ファイルを検知し、AI OCRで読み取った内容を自動で転記します。<br>スタッフは<strong>青色セル（AI読取）の内容を確認して、ステータスを「確認済」に変えるだけ</strong>です。</p>
+
+  <div class="mock-window">
+    <div class="mock-titlebar">
+      <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+      <div class="mock-urlbar">docs.google.com/spreadsheets/d/xxxxx/edit</div>
+    </div>
+    <div class="mock-body">
+      <div class="gs-header">
+        <div class="logo">S</div>
+        <div class="title">不動産管理_メインデータ</div>
+      </div>
+      <div class="gs-toolbar">
+        <button class="gs-btn gs-btn-primary">&#9881; OCR バッチ実行</button>
+        <button class="gs-btn gs-btn-success">&#10004; 選択行を確認済にする</button>
+        <button class="gs-btn gs-btn-secondary">&#128269; フィルタ</button>
+        <span style="flex:1;"></span>
+        <span style="font-size:11px; color:#5f6368;">最終バッチ実行: 2026/05/16 09:00</span>
+      </div>
+      <div class="gs-table-wrap">
+        <table class="gs-table">
+          <tr>
+            <th class="col-header"></th>
+            <th class="col-header">A</th><th class="col-header">B</th><th class="col-header">C</th>
+            <th class="col-header">D</th><th class="col-header">E</th><th class="col-header">F</th>
+            <th class="col-header">G</th><th class="col-header">H</th><th class="col-header">I</th>
+            <th class="col-header">J</th>
+          </tr>
+          <tr>
+            <th class="row-header"></th>
+            <th>ID</th><th>請求日</th><th>物件名</th><th>オーナー</th>
+            <th>費目</th><th>金額 (MYR)</th><th>支払先</th>
+            <th>元ファイル</th><th>ステータス</th><th>備考</th>
+          </tr>
+          <tr>
+            <td class="row-header">2</td>
+            <td class="auto-filled">INV-0051</td>
+            <td class="auto-filled">2026/05/15</td>
+            <td class="auto-filled">Unit A-301, Condo Setia</td>
+            <td class="auto-filled">田中太郎</td>
+            <td class="auto-filled">水道代</td>
+            <td class="auto-filled" style="text-align:right;">RM 45.00</td>
+            <td class="auto-filled">Air Selangor</td>
+            <td><a href="#" style="font-size:11px; color:#1a73e8;">PDF</a></td>
+            <td><span class="status-ok">確認済</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="row-header">3</td>
+            <td class="auto-filled">INV-0052</td>
+            <td class="auto-filled">2026/05/14</td>
+            <td class="auto-filled">Unit B-102, The Residence</td>
+            <td class="auto-filled">鈴木花子</td>
+            <td class="auto-filled">修繕費</td>
+            <td class="auto-filled" style="text-align:right;">RM 850.00</td>
+            <td class="auto-filled">ABC Maintenance</td>
+            <td><a href="#" style="font-size:11px; color:#1a73e8;">JPG</a></td>
+            <td><span class="status-review">要確認</span></td>
+            <td class="auto-filled" style="color:#1967d2; font-style:italic;">AI: 金額の読取に自信度低</td>
+          </tr>
+          <tr>
+            <td class="row-header">4</td>
+            <td class="auto-filled">INV-0053</td>
+            <td class="auto-filled">2026/05/13</td>
+            <td class="auto-filled">Building C, Lot 5</td>
+            <td class="auto-filled">佐藤次郎</td>
+            <td class="auto-filled">管理費</td>
+            <td class="auto-filled" style="text-align:right;">RM 1,200.00</td>
+            <td class="auto-filled">JMB Building C</td>
+            <td><a href="#" style="font-size:11px; color:#1a73e8;">PDF</a></td>
+            <td><span class="status-ok">確認済</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="row-header">5</td>
+            <td class="auto-filled">INV-0054</td>
+            <td class="auto-filled">2026/05/12</td>
+            <td class="auto-filled">Unit A-301, Condo Setia</td>
+            <td class="auto-filled">田中太郎</td>
+            <td class="auto-filled">保険料</td>
+            <td class="auto-filled" style="text-align:right;">RM 2,400.00</td>
+            <td class="auto-filled">AIA Insurance</td>
+            <td><a href="#" style="font-size:11px; color:#1a73e8;">PDF</a></td>
+            <td><span class="status-ok">確認済</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="row-header">6</td>
+            <td class="auto-filled">INV-0055</td>
+            <td class="auto-filled">2026/05/11</td>
+            <td class="auto-filled">Unit D-205, Sky Villa</td>
+            <td class="auto-filled">山田一郎</td>
+            <td class="auto-filled">電気代</td>
+            <td class="auto-filled" style="text-align:right;">RM 320.50</td>
+            <td class="auto-filled">TNB</td>
+            <td><a href="#" style="font-size:11px; color:#1a73e8;">PNG</a></td>
+            <td><span class="status-auto">AI読取済</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="row-header">7</td>
+            <td class="auto-filled">INV-0056</td>
+            <td class="auto-filled">2026/05/10</td>
+            <td class="auto-filled">Unit B-102, The Residence</td>
+            <td class="auto-filled">鈴木花子</td>
+            <td class="auto-filled">修繕費</td>
+            <td class="auto-filled" style="text-align:right;">RM 480.00</td>
+            <td class="auto-filled">CoolTech Aircon</td>
+            <td><a href="#" style="font-size:11px; color:#1a73e8;">PDF</a></td>
+            <td><span class="status-auto">AI読取済</span></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+      <div class="gs-tabs">
+        <div class="gs-tab active">請求書データ</div>
+        <div class="gs-tab">マスター_物件</div>
+        <div class="gs-tab">マスター_オーナー</div>
+        <div class="gs-tab">賃料管理</div>
+        <div class="gs-tab">入金データ</div>
+        <div class="gs-tab">消込管理</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+    <span class="annotation">青色セル = AI が自動入力</span>
+    <span class="annotation green">確認済 = スタッフが内容OKと確認</span>
+    <span class="annotation orange">要確認 = AI の読取自信度が低い</span>
+  </div>
+
+  <div class="callout-box orange">
+    <strong>確認フローのイメージ:</strong>
+    AI が読み取った内容は全て青色セルで表示。スタッフは元のPDFリンクをクリックして見比べ、OKなら「確認済」ボタンを押すだけ。AI が自信のない箇所は「要確認」として黄色で強調されます。
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- SCREEN 3: Dashboard / Control Panel       -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">STEP 3</div>
+  <h2>スプレッドシート ─ 操作メニュー</h2>
+  <p class="lead">レポート生成や消込はこの画面のボタンから実行します。</p>
+
+  <div class="mock-window">
+    <div class="mock-titlebar">
+      <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+      <div class="mock-urlbar">docs.google.com/spreadsheets/d/xxxxx/edit#gid=menu</div>
+    </div>
+    <div class="mock-body">
+      <div class="gs-header">
+        <div class="logo">S</div>
+        <div class="title">不動産管理_メインデータ</div>
+      </div>
+      <div style="padding:32px; background:#fff;">
+
+        <!-- summary stats -->
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px;">
+          <div style="background:#e8f0fe; border-radius:8px; padding:16px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#1a73e8;">6</div>
+            <div style="font-size:12px; color:#5f6368;">今月の請求書</div>
+          </div>
+          <div style="background:#e6f4ea; border-radius:8px; padding:16px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#137333;">4</div>
+            <div style="font-size:12px; color:#5f6368;">確認済</div>
+          </div>
+          <div style="background:#fef7e0; border-radius:8px; padding:16px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#e37400;">1</div>
+            <div style="font-size:12px; color:#5f6368;">要確認</div>
+          </div>
+          <div style="background:#fce8e6; border-radius:8px; padding:16px; text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#c5221f;">2</div>
+            <div style="font-size:12px; color:#5f6368;">未消込</div>
+          </div>
+        </div>
+
+        <!-- action buttons -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="border:2px solid #1a73e8; border-radius:10px; padding:20px;">
+            <div style="font-size:15px; font-weight:700; color:#1a73e8; margin-bottom:6px;">&#128196; オーナー別レポート生成</div>
+            <div style="font-size:12px; color:#5f6368; margin-bottom:12px;">
+              確認済データから、オーナーごとの月次収支レポートを<br>PDF で自動生成し、Google Drive に保存します。
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="gs-btn gs-btn-primary">全オーナー分を生成</button>
+              <button class="gs-btn gs-btn-secondary">オーナーを選択して生成</button>
+            </div>
+          </div>
+          <div style="border:2px solid #0f9d58; border-radius:10px; padding:20px;">
+            <div style="font-size:15px; font-weight:700; color:#0f9d58; margin-bottom:6px;">&#128231; レポート一括送付</div>
+            <div style="font-size:12px; color:#5f6368; margin-bottom:12px;">
+              生成済みレポートをオーナーのメールアドレスに<br>自動送信します（送信前にプレビュー可能）。
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="gs-btn gs-btn-success">一括メール送信</button>
+              <button class="gs-btn gs-btn-secondary">送信プレビュー</button>
+            </div>
+          </div>
+          <div style="border:2px solid #f9ab00; border-radius:10px; padding:20px;">
+            <div style="font-size:15px; font-weight:700; color:#e37400; margin-bottom:6px;">&#128179; 入金消込</div>
+            <div style="font-size:12px; color:#5f6368; margin-bottom:12px;">
+              銀行の入金データをインポートし、<br>請求データとの自動マッチングを実行します。
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="gs-btn gs-btn-warning">入金CSV取込</button>
+              <button class="gs-btn gs-btn-secondary">自動マッチング実行</button>
+            </div>
+          </div>
+          <div style="border:2px solid #9334e6; border-radius:10px; padding:20px;">
+            <div style="font-size:15px; font-weight:700; color:#9334e6; margin-bottom:6px;">&#9881; OCR バッチ</div>
+            <div style="font-size:12px; color:#5f6368; margin-bottom:12px;">
+              Google Drive の新規ファイルを検知して<br>AI OCR 読取を実行します。通常は自動実行。
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="gs-btn gs-btn-secondary">手動でOCR実行</button>
+              <button class="gs-btn gs-btn-secondary">実行ログを見る</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="gs-tabs">
+        <div class="gs-tab">請求書データ</div>
+        <div class="gs-tab">マスター_物件</div>
+        <div class="gs-tab">マスター_オーナー</div>
+        <div class="gs-tab">賃料管理</div>
+        <div class="gs-tab">入金データ</div>
+        <div class="gs-tab">消込管理</div>
+        <div class="gs-tab active">メニュー</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-box green">
+    <strong>操作は全てこの画面から:</strong>
+    レポート生成、メール送付、入金消込、OCR実行 ── 全てボタンひとつで実行できます。スプレッドシートの中で完結するので、新しいツールを覚える必要はありません。
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- SCREEN 4: Owner Report output             -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">OUTPUT 1</div>
+  <h2>オーナー別 月次収支レポート（PDF出力イメージ）</h2>
+  <p class="lead">「レポート生成」ボタンを押すと、オーナーごとにこのようなPDFが自動で作られます。</p>
+
+  <div class="mock-window">
+    <div class="mock-titlebar">
+      <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+      <div class="mock-urlbar">drive.google.com/file/d/xxxxx ─ レポート_田中太郎様_2026年05月.pdf</div>
+    </div>
+    <div class="mock-body">
+      <div class="report-wrap">
+        <div class="report-header">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <h2>月次収支レポート</h2>
+              <div class="meta">Monthly Property Statement</div>
+            </div>
+            <div style="text-align:right; font-size:12px; color:#5f6368;">
+              レポート番号: RPT-2026-05-001<br>
+              作成日: 2026年05月16日
+            </div>
+          </div>
+        </div>
+
+        <table class="report-table" style="margin-bottom:24px;">
+          <tr>
+            <th style="width:30%;">オーナー名</th><td>田中 太郎 様</td>
+            <th style="width:20%;">対象月</th><td>2026年5月</td>
+          </tr>
+          <tr>
+            <th>物件</th><td>Unit A-301, Condo Setia Alam</td>
+            <th>物件ID</th><td>PROP-001</td>
+          </tr>
+        </table>
+
+        <h3 style="font-size:14px; font-weight:600; margin:20px 0 8px; color:#202124;">&#9632; 収入の部</h3>
+        <table class="report-table">
+          <tr><th>項目</th><th>詳細</th><th class="right">金額 (MYR)</th></tr>
+          <tr><td>賃料収入</td><td>5月分家賃（テナント: Ahmad bin Hassan）</td><td class="right">3,500.00</td></tr>
+          <tr class="sub-total"><td colspan="2" style="text-align:right;">収入 合計</td><td class="right">3,500.00</td></tr>
+        </table>
+
+        <h3 style="font-size:14px; font-weight:600; margin:20px 0 8px; color:#202124;">&#9632; 支出の部</h3>
+        <table class="report-table">
+          <tr><th>項目</th><th>詳細</th><th class="right">金額 (MYR)</th></tr>
+          <tr><td>水道代</td><td>Air Selangor（2026/05/15）</td><td class="right">45.00</td></tr>
+          <tr><td>保険料</td><td>AIA Insurance 年次（月割）</td><td class="right">200.00</td></tr>
+          <tr><td>管理手数料</td><td>当社管理フィー（賃料の8%）</td><td class="right">280.00</td></tr>
+          <tr class="sub-total"><td colspan="2" style="text-align:right;">支出 合計</td><td class="right">525.00</td></tr>
+        </table>
+
+        <table class="report-table" style="margin-top:16px;">
+          <tr class="total-row"><td colspan="2" style="text-align:right; font-size:14px;">差引 オーナー様お受取額</td><td class="right" style="font-size:16px; color:#137333;">MYR 2,975.00</td></tr>
+        </table>
+
+        <div style="margin-top:24px; padding:12px 16px; background:#f8f9fa; border-radius:4px; font-size:11px; color:#5f6368;">
+          ※ 本レポートは自動生成されています。内容にご不明点がございましたらお問い合わせください。<br>
+          ※ お支払いは毎月末日に登録口座へお振込みいたします。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <strong>レポートのカスタマイズ:</strong>
+    項目の構成やデザインは、現在お使いのレポートに合わせて調整します。「現在のレポートのサンプル」をいただけると、より正確に再現できます。
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- SCREEN 5: 消込管理                         -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">OUTPUT 2</div>
+  <h2>入金消込管理シート</h2>
+  <p class="lead">銀行のCSVを取り込むと、AI が自動で請求データとマッチング。未消込の行がハイライトされます。</p>
+
+  <div class="mock-window">
+    <div class="mock-titlebar">
+      <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+      <div class="mock-urlbar">docs.google.com/spreadsheets/d/xxxxx/edit#gid=reconciliation</div>
+    </div>
+    <div class="mock-body">
+      <div class="gs-header">
+        <div class="logo">S</div>
+        <div class="title">不動産管理_メインデータ</div>
+      </div>
+      <div class="gs-toolbar">
+        <button class="gs-btn gs-btn-warning">&#128179; 入金CSV取込</button>
+        <button class="gs-btn gs-btn-primary">&#9889; 自動マッチング実行</button>
+        <button class="gs-btn gs-btn-secondary">&#128276; 未消込リマインダー送信</button>
+      </div>
+      <div class="gs-table-wrap">
+        <table class="gs-table">
+          <tr>
+            <th class="col-header"></th>
+            <th class="col-header">A</th><th class="col-header">B</th><th class="col-header">C</th>
+            <th class="col-header">D</th><th class="col-header">E</th><th class="col-header">F</th>
+            <th class="col-header">G</th><th class="col-header">H</th>
+          </tr>
+          <tr>
+            <th class="row-header"></th>
+            <th>対象月</th><th>オーナー</th><th>物件</th><th>請求額 (MYR)</th>
+            <th>入金額 (MYR)</th><th>入金日</th><th>消込ステータス</th><th>備考</th>
+          </tr>
+          <tr>
+            <td class="row-header">2</td>
+            <td class="highlight">2026/05</td>
+            <td class="highlight">田中太郎</td>
+            <td class="highlight">Unit A-301</td>
+            <td class="highlight" style="text-align:right;">2,975.00</td>
+            <td class="highlight" style="text-align:right;">2,975.00</td>
+            <td class="highlight">2026/05/28</td>
+            <td><span class="status-ok">消込済</span></td>
+            <td class="highlight">自動マッチ</td>
+          </tr>
+          <tr>
+            <td class="row-header">3</td>
+            <td class="highlight">2026/05</td>
+            <td class="highlight">佐藤次郎</td>
+            <td class="highlight">Building C</td>
+            <td class="highlight" style="text-align:right;">4,200.00</td>
+            <td class="highlight" style="text-align:right;">4,200.00</td>
+            <td class="highlight">2026/05/30</td>
+            <td><span class="status-ok">消込済</span></td>
+            <td class="highlight">自動マッチ</td>
+          </tr>
+          <tr>
+            <td class="row-header">4</td>
+            <td class="pending">2026/05</td>
+            <td class="pending">鈴木花子</td>
+            <td class="pending">Unit B-102</td>
+            <td class="pending" style="text-align:right;">1,850.00</td>
+            <td class="pending" style="text-align:right;">─</td>
+            <td class="pending">─</td>
+            <td><span class="status-pending">未入金</span></td>
+            <td class="pending" style="color:#c5221f;">期日超過 3日</td>
+          </tr>
+          <tr>
+            <td class="row-header">5</td>
+            <td style="background:#fef7e0;">2026/05</td>
+            <td style="background:#fef7e0;">山田一郎</td>
+            <td style="background:#fef7e0;">Unit D-205</td>
+            <td style="background:#fef7e0; text-align:right;">2,500.00</td>
+            <td style="background:#fef7e0; text-align:right;">2,000.00</td>
+            <td style="background:#fef7e0;">2026/05/29</td>
+            <td><span class="status-review">一部入金</span></td>
+            <td style="background:#fef7e0; color:#e37400;">差額 RM 500.00</td>
+          </tr>
+        </table>
+      </div>
+      <div class="gs-tabs">
+        <div class="gs-tab">請求書データ</div>
+        <div class="gs-tab">マスター_物件</div>
+        <div class="gs-tab">マスター_オーナー</div>
+        <div class="gs-tab">賃料管理</div>
+        <div class="gs-tab">入金データ</div>
+        <div class="gs-tab active">消込管理</div>
+        <div class="gs-tab">メニュー</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin: 12px 0;">
+    <span class="annotation green">緑 = 消込完了（自動マッチ成功）</span>
+    <span class="annotation red">赤 = 未入金（期日超過）</span>
+    <span class="annotation orange">黄 = 一部入金（差額あり）</span>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- SCREEN 6: Email preview                   -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">OUTPUT 3</div>
+  <h2>自動メール送信（プレビューイメージ）</h2>
+  <p class="lead">レポート送信ボタンを押すと、オーナーごとにレポートPDFを添付したメールが自動送信されます。</p>
+
+  <div class="mock-window">
+    <div class="mock-titlebar">
+      <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+      <div class="mock-urlbar">mail.google.com/mail/u/0/#drafts</div>
+    </div>
+    <div class="mock-body" style="padding:32px; background:#fff;">
+      <div style="max-width:560px; margin:0 auto;">
+        <div style="margin-bottom:16px;">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+            <span style="font-size:12px; color:#5f6368; width:40px;">To:</span>
+            <span style="font-size:13px;">tanaka.taro@example.com</span>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+            <span style="font-size:12px; color:#5f6368; width:40px;">件名:</span>
+            <span style="font-size:13px; font-weight:600;">【月次収支レポート】2026年5月 / Unit A-301, Condo Setia</span>
+          </div>
+        </div>
+        <div style="border-top:1px solid #e8eaed; padding-top:16px; font-size:13px; color:#202124; line-height:1.8;">
+          <p>田中 太郎 様</p>
+          <br>
+          <p>いつもお世話になっております。</p>
+          <p>2026年5月分の収支レポートを添付にてお送りいたします。</p>
+          <br>
+          <p>【サマリー】</p>
+          <p>　収入合計: MYR 3,500.00</p>
+          <p>　支出合計: MYR 525.00</p>
+          <p>　<strong>差引お受取額: MYR 2,975.00</strong></p>
+          <br>
+          <p>お支払いは5月末日に登録口座へお振込みいたします。</p>
+          <p>ご不明点がございましたらお気軽にお問い合わせください。</p>
+          <br>
+          <p>──────────────</p>
+          <p style="font-size:12px; color:#5f6368;">[会社名] Property Management<br>
+          Tel: +60-xx-xxxx-xxxx<br>
+          Email: info@example.com</p>
+        </div>
+        <div style="margin-top:16px; padding:12px; background:#f1f3f4; border-radius:6px; display:flex; align-items:center; gap:10px;">
+          <span style="color:#ea4335; font-size:20px;">&#128196;</span>
+          <div>
+            <div style="font-size:12px; font-weight:500; color:#202124;">レポート_田中太郎様_2026年05月.pdf</div>
+            <div style="font-size:11px; color:#80868b;">PDF - 142 KB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <strong>メールの文面・テンプレートはカスタマイズ可能です。</strong>
+    現在オーナーに送っているメールのサンプルをいただければ、同じトーンで作成します。
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ========================================= -->
+<!-- お願い事項                                  -->
+<!-- ========================================= -->
+<div class="section">
+  <div class="section-title">お願い</div>
+  <h2>このイメージに近づけるために教えてほしいこと</h2>
+  <p class="lead">上記の画面イメージを、実際の業務にフィットさせるために以下をご提供いただけると助かります。</p>
+
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <tr><th style="background:#1a73e8; color:#fff; padding:8px 12px; text-align:left; border:1px solid #1a73e8;">No.</th>
+        <th style="background:#1a73e8; color:#fff; padding:8px 12px; text-align:left; border:1px solid #1a73e8;">お願いしたいもの</th>
+        <th style="background:#1a73e8; color:#fff; padding:8px 12px; text-align:left; border:1px solid #1a73e8;">用途</th></tr>
+    <tr><td style="border:1px solid #dadce0; padding:8px 12px;">1</td>
+        <td style="border:1px solid #dadce0; padding:8px 12px;"><strong>請求書の実物サンプル（全種類）</strong></td>
+        <td style="border:1px solid #dadce0; padding:8px 12px;">AIに読み取らせる対象の確認。どの項目をどう読むかの設計に必要です</td></tr>
+    <tr><td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;">2</td>
+        <td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;"><strong>現在のExcel / スプレッドシートの実物</strong></td>
+        <td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;">上の「AI読取結果シート」のカラム構成を実際に合わせるため</td></tr>
+    <tr><td style="border:1px solid #dadce0; padding:8px 12px;">3</td>
+        <td style="border:1px solid #dadce0; padding:8px 12px;"><strong>オーナー向けレポートの完成品（全種類）</strong></td>
+        <td style="border:1px solid #dadce0; padding:8px 12px;">上の「月次収支レポート」のレイアウト・項目を実際に合わせるため</td></tr>
+    <tr><td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;">4</td>
+        <td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;"><strong>消込で使っているシートの実物</strong></td>
+        <td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;">上の「消込管理シート」の構成を実際に合わせるため</td></tr>
+    <tr><td style="border:1px solid #dadce0; padding:8px 12px;">5</td>
+        <td style="border:1px solid #dadce0; padding:8px 12px;"><strong>オーナーに送っているメールのサンプル</strong></td>
+        <td style="border:1px solid #dadce0; padding:8px 12px;">上の「自動メール」の文面を実際に合わせるため</td></tr>
+    <tr><td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;">6</td>
+        <td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;"><strong>物件一覧・オーナー一覧</strong></td>
+        <td style="border:1px solid #dadce0; padding:8px 12px; background:#f8f9fa;">マスターデータの設計に必要です</td></tr>
+  </table>
+
+  <div class="callout-box" style="margin-top:20px;">
+    <strong>機密情報はマスキングOKです。</strong>
+    金額の一部を「XXX」に変えたり、個人名を仮名にしていただいても構いません。構造やフォーマットが分かれば十分です。
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px; color:#80868b; font-size:12px; background:#f5f5f5;">
+  本資料はシステムの完成イメージを共有するためのモックアップです。<br>
+  実際の画面は、ヒアリング内容をもとに設計・調整いたします。
+</div>
+
+</body>
+</html>

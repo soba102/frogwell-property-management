@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問い合わせ対応自動化 ─ アーキテクチャ・フロー企画</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #1a1a1a; line-height: 1.7; background: #f5f5f5; font-size: 14px;
+  }
+
+  /* ===== Cover ===== */
+  .cover { background: linear-gradient(135deg, #00897b 0%, #004d40 100%); color: #fff; padding: 64px 40px; text-align: center; }
+  .cover .badge { display: inline-block; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: 4px 16px; font-size: 12px; letter-spacing: 1px; margin-bottom: 20px; }
+  .cover h1 { font-size: 30px; font-weight: 700; margin-bottom: 12px; }
+  .cover .sub { font-size: 17px; opacity: .9; margin-bottom: 28px; }
+  .cover .desc { font-size: 14px; opacity: .8; max-width: 640px; margin: 0 auto; }
+
+  /* ===== Section ===== */
+  .section { max-width: 980px; margin: 0 auto; padding: 48px 24px 8px; }
+  .section-title { font-size: 12px; font-weight: 700; color: #00897b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .section h2 { font-size: 22px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+  .section h3.sub { font-size: 16px; color: #00695c; margin: 24px 0 10px; }
+  .section .lead { font-size: 14px; color: #5f6368; margin-bottom: 24px; max-width: 780px; }
+
+  /* ===== Use case banner ===== */
+  .uc-banner { border-radius: 12px; padding: 22px 24px; color: #fff; margin-bottom: 24px; display: flex; align-items: center; gap: 18px; }
+  .uc-banner.u1 { background: linear-gradient(135deg, #1a73e8, #0d47a1); }
+  .uc-banner.u2 { background: linear-gradient(135deg, #8430ce, #4a148c); }
+  .uc-banner .uc-ico { font-size: 38px; }
+  .uc-banner h2 { color: #fff; font-size: 20px; margin-bottom: 2px; }
+  .uc-banner p { font-size: 13px; opacity: .9; }
+  .uc-banner .diff { margin-left: auto; background: rgba(255,255,255,.2); border-radius: 8px; padding: 6px 12px; font-size: 12px; text-align: center; flex-shrink: 0; }
+
+  /* ===== Flow bar ===== */
+  .flow-bar { display: flex; align-items: stretch; background: #fff; border-radius: 12px; padding: 20px 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); overflow-x: auto; }
+  .flow-node { flex: 1; min-width: 120px; text-align: center; padding: 10px 6px; }
+  .flow-node .icon { font-size: 26px; margin-bottom: 6px; }
+  .flow-node .label { font-size: 12.5px; font-weight: 700; color: #202124; }
+  .flow-node .sub-label { font-size: 11px; color: #5f6368; margin-top: 3px; }
+  .flow-arrow { flex-shrink: 0; display: flex; align-items: center; color: #00897b; font-size: 20px; font-weight: 700; padding: 0 2px; }
+
+  /* ===== Router (branch) ===== */
+  .router-src { background: #00897b; color: #fff; border-radius: 10px; padding: 14px 20px; text-align: center; max-width: 460px; margin: 0 auto; font-weight: 700; font-size: 14px; }
+  .router-src small { display: block; font-weight: 400; opacity: .85; font-size: 11px; margin-top: 2px; }
+  .router-down { text-align: center; color: #00897b; font-size: 22px; margin: 6px 0; }
+
+  /* ===== Category cards ===== */
+  .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .cat-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); border-left: 3px solid #8430ce; }
+  .cat-card .ci { font-size: 22px; margin-bottom: 6px; }
+  .cat-card h4 { font-size: 14px; color: #202124; margin-bottom: 4px; }
+  .cat-card p { font-size: 12px; color: #5f6368; }
+  .cat-card .route { font-size: 11.5px; color: #8430ce; margin-top: 8px; font-weight: 600; }
+  .cat-card.urgent { border-left-color: #d93025; }
+  .cat-card.urgent .route { color: #d93025; }
+
+  /* ===== Generic cards ===== */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  .card h4 { font-size: 15px; color: #202124; margin-bottom: 10px; }
+
+  /* ===== Arch layers ===== */
+  .layer { background: #fff; border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+  .layer .lname { font-weight: 700; font-size: 13px; color: #00695c; width: 150px; flex-shrink: 0; }
+  .layer .lbody { font-size: 12.5px; color: #3c4043; }
+  .layer .lico { font-size: 22px; flex-shrink: 0; }
+  .layer-arrow { text-align: center; color: #b0bec5; font-size: 16px; margin: -4px 0 6px; }
+
+  /* ===== Tables ===== */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  th, td { text-align: left; padding: 11px 14px; font-size: 13px; border-bottom: 1px solid #eef0f2; vertical-align: top; }
+  th { background: #f1f3f4; font-weight: 700; color: #3c4043; }
+  td code, p code { background: #f1f3f4; border-radius: 4px; padding: 1px 6px; font-size: 12px; }
+
+  .chip { display: inline-block; border-radius: 20px; padding: 2px 10px; font-size: 11.5px; font-weight: 600; }
+  .chip.low { background: #e6f4ea; color: #137333; }
+  .chip.mid { background: #fef7e0; color: #b06000; }
+  .chip.high { background: #fce8e6; color: #c5221f; }
+
+  /* ===== Steps / phases ===== */
+  .phase { background: #fff; border-radius: 10px; padding: 16px 18px 16px 60px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 12px; border-left: 4px solid #00897b; }
+  .phase .ptag { position: absolute; left: 14px; top: 16px; background: #00897b; color: #fff; border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 700; }
+  .phase h4 { font-size: 14px; color: #202124; margin-bottom: 4px; }
+  .phase p { font-size: 13px; color: #5f6368; }
+  .phase .when { font-size: 11px; color: #00897b; font-weight: 600; margin-top: 6px; }
+
+  .note { background: #e0f2f1; border-left: 4px solid #26a69a; border-radius: 6px; padding: 14px 18px; font-size: 13px; color: #004d40; margin-top: 14px; }
+  .note.warn { background: #fff8e1; border-left-color: #f5bf4f; color: #5f4b00; }
+  .note b { color: #003d33; }
+
+  ul.plain { list-style: none; }
+  ul.plain li { font-size: 13px; padding: 6px 0 6px 22px; position: relative; color: #3c4043; }
+  ul.plain li::before { content: "▸"; position: absolute; left: 4px; color: #00897b; }
+
+  ol.q { margin-left: 18px; }
+  ol.q li { font-size: 13.5px; color: #3c4043; padding: 6px 0; }
+
+  /* ===== Channel adapter diagram ===== */
+  .ch-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; }
+  .ch-pill { background: #fff; border: 1px solid #d8dce0; border-radius: 24px; padding: 8px 16px; font-size: 12.5px; font-weight: 600; color: #3c4043; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+  .ch-pill .now { display: inline-block; background: #00897b; color: #fff; border-radius: 10px; padding: 1px 7px; font-size: 10px; margin-left: 6px; }
+  .ch-pill.soon { color: #9aa0a6; border-style: dashed; }
+  .ch-adapter { background: linear-gradient(135deg,#00897b,#00695c); color: #fff; border-radius: 12px; padding: 16px 20px; text-align: center; max-width: 560px; margin: 8px auto; }
+  .ch-adapter b { font-size: 14px; }
+  .ch-adapter small { display: block; opacity: .9; font-size: 11.5px; margin-top: 3px; }
+  .ch-core { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; max-width: 720px; margin: 8px auto 0; }
+  .ch-core div { background: #fff; border-radius: 10px; padding: 12px; text-align: center; font-size: 12px; font-weight: 600; color: #00695c; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+  /* ===== Policy table ===== */
+  .pol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pol-box { border-radius: 12px; padding: 18px; }
+  .pol-box.a { background: #e6f4ea; border: 1px solid #c7ead3; }
+  .pol-box.h { background: #e8f0fe; border: 1px solid #c6dafc; }
+  .pol-box h4 { font-size: 14px; margin-bottom: 10px; }
+  .pol-box.a h4 { color: #137333; }
+  .pol-box.h h4 { color: #1a56c4; }
+  .pol-box ul { list-style: none; }
+  .pol-box li { font-size: 13px; padding: 5px 0 5px 20px; position: relative; color: #3c4043; }
+  .pol-box.a li::before { content: "⚡"; position: absolute; left: 0; }
+  .pol-box.h li::before { content: "👤"; position: absolute; left: 0; }
+
+  .footer { text-align: center; color: #80868b; font-size: 12px; padding: 40px 24px 56px; }
+
+  @media (max-width: 720px) {
+    .grid2, .cat-grid { grid-template-columns: 1fr; }
+    .layer { flex-direction: column; align-items: flex-start; }
+    .layer .lname { width: auto; }
+  }
+  @media print { body { background: #fff; } .section { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+  <div class="cover">
+    <div class="badge">ARCHITECTURE &amp; FLOW ─ ご提案・協議用</div>
+    <h1>問い合わせ対応の自動化 企画</h1>
+    <div class="sub">仲介会社対応 ＆ テナント対応</div>
+    <div class="desc">
+      既存の「請求書OCR・レポート・入金消込」プロトタイプに続く拡張テーマとして、
+      ① 仲介会社からの問い合わせ ② テナントからの問い合わせ の自動化アーキテクチャとフローを整理します。
+    </div>
+  </div>
+
+  <!-- ===== 全体像 ===== -->
+  <div class="section">
+    <div class="section-title">Overview</div>
+    <h2>2つの問い合わせ自動化</h2>
+    <p class="lead">
+      性質が異なる2系統です。仲介会社向けは「<b>ナレッジを返す</b>」自動応答型、
+      テナント向けは「<b>内容を分類して関係者に振り分ける</b>」トリアージ（仕分け）型です。
+      後者はテナント・スタッフ・業者・オーナーと関係者が多く、難易度は高めです。
+    </p>
+    <div class="grid2">
+      <div class="card">
+        <h4>① 仲介会社からの問い合わせ</h4>
+        <ul class="plain">
+          <li>空き物件一覧の照会</li>
+          <li>物件写真の依頼</li>
+          <li>内見・鍵あけの手配</li>
+        </ul>
+        <p style="margin-top:10px;font-size:12.5px;color:#1a73e8;font-weight:600;">→ ナレッジ（空き状況・写真・ルール）を登録し、AIが照合して自動返答</p>
+      </div>
+      <div class="card">
+        <h4>② テナントからの問い合わせ</h4>
+        <ul class="plain">
+          <li>WhatsApp / LINE / メールで受付</li>
+          <li>設備故障・修繕などを業者手配</li>
+          <li>オーナーへ費用負担を連絡・承認</li>
+        </ul>
+        <p style="margin-top:10px;font-size:12.5px;color:#8430ce;font-weight:600;">→ AIが内容を分類し、ケース別に関係者へ振り分け・通知</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== UC1 ===== -->
+  <div class="section">
+    <div class="section-title">Use Case 1</div>
+    <div class="uc-banner u1">
+      <div class="uc-ico">🏢</div>
+      <div>
+        <h2>仲介会社からの問い合わせ対応</h2>
+        <p>ナレッジ照合による自動応答型</p>
+      </div>
+      <div class="diff">難易度<br><b>低〜中</b></div>
+    </div>
+
+    <h3 class="sub">対応フロー</h3>
+    <div class="flow-bar">
+      <div class="flow-node"><div class="icon">📨</div><div class="label">問い合わせ受信</div><div class="sub-label">メール / フォーム</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🤖</div><div class="label">AI分類</div><div class="sub-label">空き照会 / 写真 /<br>鍵あけ手配 等</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">📚</div><div class="label">ナレッジ照合</div><div class="sub-label">空き状況・写真URL<br>内見ルール</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">✍️</div><div class="label">返信文を自動生成</div><div class="sub-label">人が承認 →送信<br>(または自動送信)</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🔑</div><div class="label">手配が必要なら</div><div class="sub-label">鍵あけ依頼を<br>担当へエスカレ</div></div>
+    </div>
+
+    <h3 class="sub">必要なナレッジ／データ</h3>
+    <table>
+      <thead><tr><th>登録するもの</th><th>内容</th><th>使われ方</th></tr></thead>
+      <tbody>
+        <tr><td>物件マスター（拡張）</td><td>空き状況 / 募集賃料 / 入居可能日 / 写真フォルダURL</td><td>空き物件一覧・写真依頼への回答に利用</td></tr>
+        <tr><td>内見・鍵あけルール</td><td>鍵の所在 / 立会要否 / 受付時間 / 連絡先</td><td>手配可否の判断と案内文に利用</td></tr>
+        <tr><td>FAQナレッジ</td><td>よくある質問と模範回答</td><td>一般的な問い合わせへの自動回答</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">アーキテクチャ</h3>
+    <div class="layer"><span class="lico">📨</span><span class="lname">受信チャネル</span><span class="lbody">専用メールアドレス（または Web 問い合わせフォーム）で受付</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">🧠</span><span class="lname">AI（Gemini）</span><span class="lbody">問い合わせ内容を分類し、必要な情報を抽出（物件名・依頼種別）</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">📚</span><span class="lname">ナレッジDB</span><span class="lbody">スプレッドシートの物件マスター・ルール・FAQを参照</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">✉️</span><span class="lname">応答／エスカレ</span><span class="lbody">返信文を自動生成（人が承認して送信）。鍵あけ等は担当者へ通知</span></div>
+    <div class="note">
+      <b>ポイント：</b> 空き状況の鮮度がカギ。空き物件マスターを常に最新に保てば、写真・賃料・内見可否まで一括で自動回答できます。
+      まずは「返信文を自動生成 → 人が確認して送る」半自動から始めるのが安全です。
+    </div>
+  </div>
+
+  <!-- ===== UC2 ===== -->
+  <div class="section">
+    <div class="section-title">Use Case 2</div>
+    <div class="uc-banner u2">
+      <div class="uc-ico">💬</div>
+      <div>
+        <h2>テナントからの問い合わせ対応</h2>
+        <p>分類・振り分け（トリアージ）型 ／ 関係者連携あり</p>
+      </div>
+      <div class="diff">難易度<br><b>中〜高</b></div>
+    </div>
+
+    <h3 class="sub">対応フロー（全体）</h3>
+    <div class="flow-bar">
+      <div class="flow-node"><div class="icon">💬</div><div class="label">受付</div><div class="sub-label">メール（まず）→<br>WhatsApp 等</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🤖</div><div class="label">AI分類・緊急度判定</div><div class="sub-label">ケースと緊急度を<br>自動判定</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🎫</div><div class="label">チケット化</div><div class="sub-label">問い合わせ管理表<br>に起票</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🔀</div><div class="label">振り分け</div><div class="sub-label">担当・業者・<br>オーナーへ</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">✅</div><div class="label">対応・完了記録</div><div class="sub-label">履歴・費用を<br>残す</div></div>
+    </div>
+
+    <h3 class="sub">AIによる分類カテゴリ（例）</h3>
+    <div class="router-src">テナントからのメッセージ<small>AIが内容を読んでケースと緊急度を判定</small></div>
+    <div class="router-down">▼</div>
+    <div class="cat-grid">
+      <div class="cat-card urgent"><div class="ci">🚨</div><h4>緊急トラブル</h4><p>水漏れ・停電・締め出し 等</p><div class="route">→ 即スタッフへエスカレ＋緊急業者手配</div></div>
+      <div class="cat-card"><div class="ci">🔧</div><h4>設備故障・修繕</h4><p>エアコン・水回り・電気 等</p><div class="route">→ 業者手配＋オーナー費用連絡</div></div>
+      <div class="cat-card"><div class="ci">📄</div><h4>契約・更新・退去</h4><p>更新意向・解約予告 等</p><div class="route">→ 契約担当へ割当</div></div>
+      <div class="cat-card"><div class="ci">💰</div><h4>支払い・賃料</h4><p>支払い方法・領収書 等</p><div class="route">→ 入金消込と連携／経理へ</div></div>
+      <div class="cat-card"><div class="ci">🔊</div><h4>近隣・騒音</h4><p>クレーム・トラブル</p><div class="route">→ スタッフ確認・記録</div></div>
+      <div class="cat-card"><div class="ci">❓</div><h4>一般・FAQ</h4><p>ゴミ出し・設備の使い方 等</p><div class="route">→ ナレッジから自動回答</div></div>
+    </div>
+
+    <h3 class="sub">修繕ケースの関係者連携（最重要シナリオ）</h3>
+    <div class="flow-bar">
+      <div class="flow-node"><div class="icon">💬</div><div class="label">テナント受付</div><div class="sub-label">「エアコンが効かない」</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🎫</div><div class="label">起票・一次返信</div><div class="sub-label">受付した旨を<br>自動返信</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🛠️</div><div class="label">業者手配</div><div class="sub-label">業者マスターから<br>選定・見積依頼</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🏠</div><div class="label">オーナー費用連絡</div><div class="sub-label">負担区分を提示<br>→承認を取得</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">📅</div><div class="label">日程調整・実施</div><div class="sub-label">テナント↔業者<br>の日程確定</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">✅</div><div class="label">完了・計上</div><div class="sub-label">費用をレポート/<br>請求に反映</div></div>
+    </div>
+
+    <h3 class="sub">アーキテクチャ</h3>
+    <div class="layer"><span class="lico">💬</span><span class="lname">共通チャネル基盤</span><span class="lbody">メール（まず検証）/ WhatsApp / LINE を<b>共通のアダプタ</b>で受信。チャネルを後から追加しても、以降の処理は共通（後述）</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">🧠</span><span class="lname">AI分類エンジン</span><span class="lbody">Gemini がメッセージを読み、カテゴリ・緊急度・物件/テナント特定・要約を出力</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">🎫</span><span class="lname">問い合わせ管理DB</span><span class="lbody">スプレッドシートにチケットとして起票（受付ID・分類・担当・ステータス・履歴）</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">🔀</span><span class="lname">振り分け・通知</span><span class="lbody">担当スタッフ・業者・オーナーへメール/チャットで通知。一次返信はテナントへ自動送信</span></div>
+    <div class="layer-arrow">▼</div>
+    <div class="layer"><span class="lico">🔗</span><span class="lname">既存システム連携</span><span class="lbody">物件/オーナー/テナントマスターを参照。確定した費用は請求・レポート・消込へ接続</span></div>
+
+    <h3 class="sub">問い合わせ管理表（チケット）の項目</h3>
+    <table>
+      <thead><tr><th>項目</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>受付ID / 受付日時</td><td>一意のチケット番号と受付タイムスタンプ</td></tr>
+        <tr><td>チャネル / 原文</td><td>WhatsApp・LINE・メールの別と、元メッセージ</td></tr>
+        <tr><td>テナント / 物件 / オーナー</td><td>マスターと突合して自動特定</td></tr>
+        <tr><td>分類 / 緊急度</td><td>AIが判定（修繕・緊急・契約 … ／ 高・中・低）</td></tr>
+        <tr><td>担当 / 業者</td><td>割り当てたスタッフ・手配業者</td></tr>
+        <tr><td>費用 / 負担区分 / オーナー承認</td><td>見積額・オーナー/テナント負担・承認状況</td></tr>
+        <tr><td>ステータス / 対応履歴</td><td>受付→手配中→対応中→完了 と、やりとりの記録</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== チャネル選定 ===== -->
+  <div class="section">
+    <div class="section-title">Channel</div>
+    <h2>受付チャネルは「共通モジュール」で設計（メールから検証）</h2>
+    <p class="lead">
+      まずは検証も兼ねて <b>メールから開始</b>し、受信部分を<b>共通のアダプタ（差し替え可能な部品）</b>として作ります。
+      AI分類やチケット管理といった中核の仕組みはそのままに、後から <b>WhatsApp・LINE など手段を増やせる</b>構造にします。
+      チャネルが変わっても運用フローは変わりません。
+    </p>
+
+    <h3 class="sub">共通チャネル基盤のイメージ</h3>
+    <div class="ch-row">
+      <div class="ch-pill">メール<span class="now">まず検証</span></div>
+      <div class="ch-pill soon">WhatsApp（次に拡張）</div>
+      <div class="ch-pill soon">LINE（追加可）</div>
+      <div class="ch-pill soon">その他チャット（追加可）</div>
+    </div>
+    <div class="router-down">▼</div>
+    <div class="ch-adapter"><b>共通チャネルアダプタ</b><small>各手段の受信を共通フォーマットに変換（差し替え・追加が可能）</small></div>
+    <div class="router-down">▼</div>
+    <div class="ch-core">
+      <div>🤖 AI分類エンジン</div>
+      <div>🎫 問い合わせ管理</div>
+      <div>🔀 振り分け・通知</div>
+    </div>
+    <div class="note">
+      <b>狙い：</b> 中核（AI分類・チケット・通知）を一度作れば、チャネル追加は「アダプタを足すだけ」。
+      まずメールで仕組みを検証し、そのまま WhatsApp・LINE へ広げられます。
+    </div>
+
+    <h3 class="sub">チャネル別の特徴</h3>
+    <table>
+      <thead><tr><th>チャネル</th><th>導入難易度</th><th>特徴</th><th>留意点</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>メール</b></td><td><span class="chip low">低</span></td>
+          <td>Gmail で即受付可能。送信の自由度が高い。</td>
+          <td>テナントがメールを使う前提。即時性はチャットに劣る。</td>
+        </tr>
+        <tr>
+          <td><b>LINE 公式アカウント</b></td><td><span class="chip mid">中</span></td>
+          <td>Messaging API + Webhook で双方向対応。国内で普及。</td>
+          <td>友だち追加が前提。海外テナント比率が高いと不向き。</td>
+        </tr>
+        <tr>
+          <td><b>WhatsApp Business</b></td><td><span class="chip high">高</span></td>
+          <td>マレーシアで主流。テナント側の心理的ハードルが低い。</td>
+          <td>Meta の API 審査・テンプレート承認・24時間ルール・公式パートナー(BSP)経由が必要。</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note warn">
+      <b>推奨アプローチ：</b> 中核（AI分類・チケット管理）を共通モジュールとして先に固め、
+      <b>まずメールで動作を検証</b>。仕組みが固まったら <b>WhatsApp を接続</b>し、以降の追加（LINE 等）は
+      アダプタを足すだけで対応します。メールは導入が容易で、API審査などの待ちもないため、検証の初手に最適です。
+    </div>
+  </div>
+
+  <!-- ===== 自動返信ポリシー ===== -->
+  <div class="section">
+    <div class="section-title">Reply Policy</div>
+    <h2>自動返信のポリシー</h2>
+    <p class="lead">
+      誤回答を防ぐため、<b>自動で返すのは「定型」だけ</b>に限定します。判断や費用が絡むものは、
+      必ず人が内容を確認してから返信する運用とし、AIは下書き作成までを担当します。
+    </p>
+    <div class="pol">
+      <div class="pol-box a">
+        <h4>自動返信する（定型）</h4>
+        <ul>
+          <li>FAQ（ゴミ出し・設備の使い方・受付時間 等）</li>
+          <li>受付完了の一次返信（「承りました」）</li>
+          <li>空き状況・写真URLなど確定情報の案内</li>
+        </ul>
+      </div>
+      <div class="pol-box h">
+        <h4>人が承認してから返信する</h4>
+        <ul>
+          <li>修繕・業者手配など対応方針を伴うもの</li>
+          <li>費用負担・見積・オーナー承認が絡むもの</li>
+          <li>契約・退去・クレームなど判断が必要なもの</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note">
+      AIは「分類」「要約」「下書き作成」までを担い、最終送信の可否は人が握る ── という線引きにより、
+      省力化と安全性を両立します。運用に慣れてから、自動返信の対象を段階的に広げられます。
+    </div>
+  </div>
+
+  <!-- ===== 段階導入 ===== -->
+  <div class="section">
+    <div class="section-title">Roadmap</div>
+    <h2>段階的な導入プラン</h2>
+    <p class="lead">小さく始めて検証し、関係者連携・チャネルを段階的に広げます。</p>
+    <div class="phase">
+      <span class="ptag">Phase 0</span>
+      <h4>仲介会社向け：ナレッジ自動応答（クイックウィン）</h4>
+      <p>メール受付 → AI分類 → 空き物件マスター/FAQ照合 → 返信文の自動生成（人が承認して送信）。鍵あけは担当へ通知。</p>
+      <div class="when">最短で着手可能・既存スプレッドシート資産を活用</div>
+    </div>
+    <div class="phase">
+      <span class="ptag">Phase 1</span>
+      <h4>テナント向け：中核（AI分類＋チケット）を共通モジュールで構築</h4>
+      <p>まずメール受付で、AIが分類・緊急度判定 → 問い合わせ管理表に起票 → 担当へ自動通知。FAQ・一次返信は自動、業者・オーナー連絡は「下書き提示→人が送信」。<b>チャネルに依存しない中核</b>をここで固める。</p>
+      <div class="when">関係者連携を半自動で確立するフェーズ</div>
+    </div>
+    <div class="phase">
+      <span class="ptag">Phase 2</span>
+      <h4>WhatsApp 連携（共通アダプタで接続）</h4>
+      <p>WhatsApp を共通チャネルアダプタ経由で接続し、双方向のやりとりに対応。Phase 1 の分類・チケットの仕組みをそのまま再利用。以降、LINE 等の追加もアダプタ追加だけで対応可能。</p>
+      <div class="when">主要チャネル（WhatsApp）を本接続</div>
+    </div>
+    <div class="phase">
+      <span class="ptag">Phase 3</span>
+      <h4>業者手配・オーナー承認のワークフロー化</h4>
+      <p>見積取得・オーナーの費用承認・日程調整を半自動化。確定費用を請求/レポート/消込に自動連携。自動返信の対象範囲を拡大。</p>
+      <div class="when">運用が固まってから本格自動化</div>
+    </div>
+  </div>
+
+  <!-- ===== 既存連携 ===== -->
+  <div class="section">
+    <div class="section-title">Integration</div>
+    <h2>既存プロトタイプとの接続</h2>
+    <p class="lead">今回の問い合わせ自動化は、既存の「OCR・レポート・消込」基盤とシームレスにつながります。</p>
+    <ul class="plain">
+      <li><b>マスター再利用：</b> 物件・オーナー・テナントマスターをそのまま参照し、問い合わせ主や物件を自動特定。</li>
+      <li><b>修繕費の計上：</b> 確定した修繕費を「請求書データ」に取り込み、オーナー別レポートの支出に自動反映。</li>
+      <li><b>費用負担の整理：</b> オーナー負担/テナント負担の区分を記録し、レポートや精算に連動。</li>
+      <li><b>空き物件マスター：</b> 仲介会社対応用の空き状況は、物件マスターを拡張して一元管理。</li>
+      <li><b>業者マスター（新規）：</b> 修繕業者の連絡先・得意分野・対応エリアを登録し、手配先の自動提案に利用。</li>
+    </ul>
+  </div>
+
+  <!-- ===== 確認したい論点 ===== -->
+  <div class="section">
+    <div class="section-title">Open Questions</div>
+    <h2>ヒアリングで確認したい論点</h2>
+    <p class="lead">アーキテクチャを確定するために、次の点を伺えると設計を具体化できます。</p>
+    <ol class="q">
+      <li><b>テナントの主要連絡手段は？</b>（WhatsApp 中心？ LINE？ メール？ 国・言語の比率も）</li>
+      <li><b>自動返信の範囲は？</b> 完全自動で返してよいか、人が承認してから送る運用にするか。</li>
+      <li><b>費用負担の判定基準は？</b> 契約上の負担区分でルール化できるか、都度オーナー承認か。</li>
+      <li><b>緊急時の対応体制は？</b> エスカレ先・対応時間・SLA（何分以内に一次対応 等）。</li>
+      <li><b>仲介会社向けの自動送信可否は？</b> 空き状況の更新は誰がどの頻度で行うか。</li>
+      <li><b>業者手配の現状フローは？</b> 既存の業者リスト・依頼方法・見積の取り方。</li>
+      <li><b>記録・個人情報の要件は？</b> やりとりの保存期間、アクセス権限、監査の要否。</li>
+    </ol>
+    <div class="note">
+      上記が固まれば、Phase 0（仲介会社向けナレッジ応答）から実働モックを作り、
+      既存プロトタイプと同様に「動かして確認」しながら進められます。
+    </div>
+  </div>
+
+  <div class="footer">
+    不動産管理業務 AI自動化 ／ 問い合わせ対応 アーキテクチャ・フロー企画<br>
+    ※ 本資料は構想段階の企画であり、確定仕様ではありません。
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロトタイプ機能一覧 ─ 不動産管理業務AI自動化</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #1a1a1a;
+    line-height: 1.7;
+    background: #f5f5f5;
+    font-size: 14px;
+  }
+
+  /* ===== Cover ===== */
+  .cover {
+    background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    color: #fff;
+    padding: 64px 40px;
+    text-align: center;
+  }
+  .cover .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .cover h1 { font-size: 30px; font-weight: 700; margin-bottom: 12px; }
+  .cover .sub { font-size: 17px; opacity: .9; margin-bottom: 28px; }
+  .cover .desc { font-size: 14px; opacity: .75; max-width: 620px; margin: 0 auto; }
+
+  /* ===== Section ===== */
+  .section { max-width: 980px; margin: 0 auto; padding: 48px 24px 8px; }
+  .section-title {
+    font-size: 12px; font-weight: 700; color: #1a73e8;
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;
+  }
+  .section h2 { font-size: 22px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+  .section .lead { font-size: 14px; color: #5f6368; margin-bottom: 24px; max-width: 760px; }
+
+  /* ===== Flow bar ===== */
+  .flow-bar {
+    display: flex; align-items: center; background: #fff; border-radius: 12px;
+    padding: 20px 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); overflow-x: auto;
+  }
+  .flow-node { flex: 1; min-width: 110px; text-align: center; padding: 8px 6px; }
+  .flow-node .icon { font-size: 26px; margin-bottom: 6px; }
+  .flow-node .label { font-size: 12px; font-weight: 700; color: #202124; }
+  .flow-node .sub-label { font-size: 11px; color: #5f6368; margin-top: 2px; }
+  .flow-arrow { flex-shrink: 0; color: #1a73e8; font-size: 20px; font-weight: 700; padding: 0 2px; }
+
+  /* ===== Feature cards ===== */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .card {
+    background: #fff; border-radius: 12px; padding: 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1); border-top: 3px solid #1a73e8;
+  }
+  .card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #e8f0fe; color: #1a73e8; font-size: 13px; font-weight: 700; margin-bottom: 10px;
+  }
+  .card h3 { font-size: 16px; font-weight: 700; color: #202124; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: #5f6368; margin-bottom: 12px; }
+  .card .tag {
+    display: inline-block; background: #f1f3f4; color: #3c4043;
+    border-radius: 6px; padding: 2px 8px; font-size: 11px; margin: 2px 4px 2px 0;
+  }
+  .card .tag.ai { background: #fce8f3; color: #c2185b; }
+  .card .tag.auto { background: #e6f4ea; color: #137333; }
+
+  /* ===== Tables ===== */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  th, td { text-align: left; padding: 11px 14px; font-size: 13px; border-bottom: 1px solid #eef0f2; vertical-align: top; }
+  th { background: #f1f3f4; font-weight: 700; color: #3c4043; }
+  td code { background: #f1f3f4; border-radius: 4px; padding: 1px 6px; font-size: 12px; }
+
+  /* ===== Status chips ===== */
+  .chip { display: inline-block; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+  .chip.ok { background: #e6f4ea; color: #137333; }
+  .chip.warn { background: #fef7e0; color: #b06000; }
+  .chip.bad { background: #fce8e6; color: #c5221f; }
+  .chip.check { background: #f3e8fd; color: #8430ce; }
+
+  /* ===== Before/After ===== */
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .ba-box { border-radius: 12px; padding: 20px; }
+  .ba-box.before { background: #fef3f2; border: 1px solid #fcd9d4; }
+  .ba-box.after { background: #eafaf0; border: 1px solid #c7ead3; }
+  .ba-box h4 { font-size: 14px; margin-bottom: 12px; }
+  .ba-box.before h4 { color: #c5221f; }
+  .ba-box.after h4 { color: #137333; }
+  .ba-box ul { list-style: none; }
+  .ba-box li { font-size: 13px; padding: 6px 0 6px 22px; position: relative; color: #3c4043; }
+  .ba-box.before li::before { content: "×"; position: absolute; left: 0; color: #c5221f; font-weight: 700; }
+  .ba-box.after li::before { content: "✓"; position: absolute; left: 0; color: #137333; font-weight: 700; }
+
+  /* ===== Notes ===== */
+  .note {
+    background: #fff8e1; border-left: 4px solid #f5bf4f; border-radius: 6px;
+    padding: 14px 18px; font-size: 13px; color: #5f4b00; margin-top: 8px;
+  }
+  .note b { color: #3c2f00; }
+
+  ul.plain { list-style: none; }
+  ul.plain li { font-size: 13px; padding: 6px 0 6px 22px; position: relative; color: #3c4043; }
+  ul.plain li::before { content: "▸"; position: absolute; left: 4px; color: #1a73e8; }
+
+  /* ===== Folder cards ===== */
+  .folder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .folder-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.1); border: 1px solid #e6e8eb; }
+  .folder-card .ficon { font-size: 30px; margin-bottom: 8px; }
+  .folder-card h3 { font-size: 15px; color: #202124; margin-bottom: 4px; }
+  .folder-card .key { font-family: monospace; font-size: 11px; background: #f1f3f4; color: #1a73e8; border-radius: 4px; padding: 2px 6px; display: inline-block; margin-bottom: 10px; }
+  .folder-card p { font-size: 12.5px; color: #5f6368; }
+  .folder-card .put { font-size: 12px; color: #137333; margin-top: 8px; }
+  .folder-card .out { font-size: 12px; color: #1a73e8; margin-top: 8px; }
+
+  /* ===== Steps ===== */
+  .steps { counter-reset: step; }
+  .step { background: #fff; border-radius: 10px; padding: 16px 18px 16px 56px; position: relative; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 12px; }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 16px; top: 16px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #1a73e8; color: #fff; font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step h4 { font-size: 14px; color: #202124; margin-bottom: 4px; }
+  .step p { font-size: 13px; color: #5f6368; }
+  .step code { background: #f1f3f4; border-radius: 4px; padding: 1px 6px; font-size: 12px; }
+
+  /* ===== URL hint ===== */
+  .url-hint { background: #202124; color: #e8eaed; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 12.5px; line-height: 1.8; overflow-x: auto; margin-top: 12px; }
+  .url-hint .hl { color: #fdd663; }
+  .url-hint .cm { color: #9aa0a6; }
+
+  .footer { text-align: center; color: #80868b; font-size: 12px; padding: 40px 24px 56px; }
+
+  @media (max-width: 720px) {
+    .grid, .ba { grid-template-columns: 1fr; }
+    .folder-grid { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body { background: #fff; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="cover">
+    <div class="badge">PROTOTYPE OVERVIEW</div>
+    <h1>不動産管理業務 AI自動化プロトタイプ</h1>
+    <div class="sub">現時点で「できること」まとめ</div>
+    <div class="desc">
+      Google スプレッドシート上で動く実働プロトタイプです。請求書のAI読取から、
+      オーナー別レポートの自動生成・メール送信、銀行入金の自動消込までを一気通貫で確認できます。
+    </div>
+  </div>
+
+  <!-- ===== 全体フロー ===== -->
+  <div class="section">
+    <div class="section-title">Overview</div>
+    <h2>全体フロー</h2>
+    <p class="lead">「ファイルを置く」「ボタンを押す」だけで、データ化〜レポート〜消込まで自動で流れます。</p>
+    <div class="flow-bar">
+      <div class="flow-node"><div class="icon">📥</div><div class="label">ファイル投入</div><div class="sub-label">請求書 / 銀行CSV<br>を Drive へ</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🤖</div><div class="label">AI読取・解析</div><div class="sub-label">Gemini OCR<br>名寄せ・消込</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">📊</div><div class="label">データ化</div><div class="sub-label">スプレッドシート<br>に自動転記</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">📄</div><div class="label">レポート生成</div><div class="sub-label">オーナー別<br>PDF を自動作成</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">✉️</div><div class="label">メール送付</div><div class="sub-label">オーナーへ<br>自動送信</div></div>
+    </div>
+  </div>
+
+  <!-- ===== 機能一覧 ===== -->
+  <div class="section">
+    <div class="section-title">Features</div>
+    <h2>実装済みの機能</h2>
+    <p class="lead">すべてスプレッドシート上部のメニュー「AI管理ツール」から実行できます。</p>
+    <div class="grid">
+
+      <div class="card">
+        <div class="num">1</div>
+        <h3>請求書の AI-OCR 取込</h3>
+        <p>Drive に置いた請求書（PDF・画像）を Gemini が読み取り、請求日・物件名・費目・金額・支払先などを自動でスプレッドシートに転記します。手入力ゼロ。</p>
+        <span class="tag ai">AI-OCR</span><span class="tag auto">自動転記</span><span class="tag">PDF / 画像対応</span>
+      </div>
+
+      <div class="card">
+        <div class="num">2</div>
+        <h3>物件→オーナー 自動紐付け</h3>
+        <p>読み取った物件名をマスターと照合し、該当オーナーを自動で紐付け。表記ゆれ（部屋番号・略称）にも対応。読取信頼度に応じて「要確認」を自動フラグ。</p>
+        <span class="tag auto">自動マッチング</span><span class="tag">要確認フラグ</span>
+      </div>
+
+      <div class="card">
+        <div class="num">3</div>
+        <h3>オーナー別レポート自動生成</h3>
+        <p>ボタン1つで、オーナーごとの月次収支レポート（収入の部・支出の部・お受取額）を PDF で自動生成し、Drive に保存します。賃料収入や入金状況も反映。</p>
+        <span class="tag auto">PDF自動生成</span><span class="tag">管理手数料計算</span>
+      </div>
+
+      <div class="card">
+        <div class="num">4</div>
+        <h3>レポート一括メール送信</h3>
+        <p>生成したレポートPDFを、オーナーマスターのメールアドレス宛に自動で一括送信。件名・本文も自動生成され、会社情報の署名付きで送られます。</p>
+        <span class="tag auto">一括送信</span><span class="tag">テンプレ自動生成</span>
+      </div>
+
+      <div class="card">
+        <div class="num">5</div>
+        <h3>銀行入金の自動消込</h3>
+        <p>銀行CSV（SMBC等）を取り込み、振込名義からテナント→物件→オーナーを特定。賃料（請求額）と入金額を突合し、消込ステータスを自動判定します。</p>
+        <span class="tag auto">名寄せ</span><span class="tag auto">自動消込</span><span class="tag">滞納検知</span>
+      </div>
+
+      <div class="card">
+        <div class="num">6</div>
+        <h3>ダッシュボード</h3>
+        <p>請求書の処理状況（確認済 / 要確認 / AI読取済）と、入金消込の状況（消込済 / 一部入金 / 未入金 / 要確認）を件数サマリーで一覧表示します。</p>
+        <span class="tag">進捗の見える化</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 消込の中身 ===== -->
+  <div class="section">
+    <div class="section-title">Reconciliation</div>
+    <h2>入金消込のしくみ（注目機能）</h2>
+    <p class="lead">
+      銀行CSVの振込名義は「IBG TRANSFER」「DUITNOW」などの接頭辞やカナ表記でブレますが、
+      正規化した部分一致でテナントを特定し、賃料と突合して自動でステータスを付与します。
+    </p>
+    <table>
+      <thead>
+        <tr><th>銀行CSVの振込（例）</th><th>特定したオーナー</th><th>賃料 / 入金</th><th>判定</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>TRANSFER FROM AHMAD HASSAN<br>RM 3,500</td><td>田中太郎 様</td><td>3,500 / 3,500</td><td><span class="chip ok">消込済</span></td></tr>
+        <tr><td>DUITNOW LIM WEI MING<br>RM 2,800</td><td>鈴木花子 様</td><td>2,800 / 2,800</td><td><span class="chip ok">消込済</span></td></tr>
+        <tr><td>IBG TRANSFER RAJ KUMAR<br>RM 2,000</td><td>山田一郎 様</td><td>2,500 / 2,000</td><td><span class="chip warn">一部入金</span></td></tr>
+        <tr><td>（入金なし）</td><td>佐藤次郎 様</td><td>4,200 / 0</td><td><span class="chip bad">未入金</span></td></tr>
+        <tr><td>DUITNOW XYZ TRADING SDN BHD<br>RM 1,500</td><td>―（特定不可）</td><td>― / 1,500</td><td><span class="chip check">要確認</span></td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <b>ポイント：</b> 滞納（未入金）や、マスターに無い振込（要確認）が自動で炙り出されるため、
+      これまで目視で突合していた入金確認作業が大幅に削減されます。
+    </div>
+  </div>
+
+  <!-- ===== データ構造 ===== -->
+  <div class="section">
+    <div class="section-title">Data Model</div>
+    <h2>データ構造（スプレッドシートのシート）</h2>
+    <p class="lead">マスターを整えておけば、あとは自動で各シートが埋まっていきます。</p>
+    <table>
+      <thead><tr><th>シート名</th><th>役割</th><th>主な項目</th></tr></thead>
+      <tbody>
+        <tr><td>請求書データ</td><td>OCRで読み取った請求書の明細</td><td>請求日 / 物件名 / オーナー / 費目 / 金額 / ステータス</td></tr>
+        <tr><td>入金消込</td><td>銀行入金とテナント賃料の突合結果</td><td>対象月 / オーナー / テナント / 請求額 / 入金額 / ステータス</td></tr>
+        <tr><td>マスター_物件</td><td>物件の一覧</td><td>物件ID / 物件名 / 住所 / オーナーID</td></tr>
+        <tr><td>マスター_オーナー</td><td>オーナーの一覧（送付先）</td><td>オーナーID / 氏名 / メール / 物件ID</td></tr>
+        <tr><td>マスター_テナント</td><td>入居者と賃料・振込名義</td><td>テナント名 / 振込名義 / 物件ID / オーナーID / 月額賃料</td></tr>
+        <tr><td>設定</td><td>APIキー・各フォルダID・会社情報</td><td><code>GEMINI_API_KEY</code> / <code>各FOLDER_ID</code> / 管理手数料率</td></tr>
+        <tr><td>メニュー</td><td>ダッシュボード（サマリー表示）</td><td>請求書サマリー / 入金消込サマリー</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== フォルダの使い方 ===== -->
+  <div class="section">
+    <div class="section-title">Drive Folders</div>
+    <h2>Google Drive フォルダの使い方</h2>
+    <p class="lead">
+      用途ごとに <b>3つのフォルダ</b> を Drive に用意します。それぞれのフォルダIDを「設定」シートに登録すると、
+      システムが自動で読み書きします。<b>用途別に分ける</b>のがポイントです（混在すると誤読み込みの原因に）。
+    </p>
+    <div class="folder-grid">
+      <div class="folder-card">
+        <div class="ficon">📥</div>
+        <h3>① 請求書フォルダ</h3>
+        <span class="key">INVOICE_FOLDER_ID</span>
+        <p>OCRで読み取らせたい請求書を入れる場所。</p>
+        <div class="put">▶ 入れるもの：請求書の PDF・画像（JPEG/PNG）</div>
+        <div class="out">◀ システムの動き：新規ファイルを読取→「請求書データ」へ転記</div>
+      </div>
+      <div class="folder-card">
+        <div class="ficon">📄</div>
+        <h3>② レポート出力フォルダ</h3>
+        <span class="key">REPORT_FOLDER_ID</span>
+        <p>生成したオーナー別レポートが保存される場所。</p>
+        <div class="put">▶ 入れるもの：なし（出力先として空で用意）</div>
+        <div class="out">◀ システムの動き：レポートPDFを自動保存</div>
+      </div>
+      <div class="folder-card">
+        <div class="ficon">🏦</div>
+        <h3>③ 入金CSVフォルダ</h3>
+        <span class="key">DEPOSIT_FOLDER_ID</span>
+        <p>銀行からダウンロードした入金明細CSVを入れる場所。</p>
+        <div class="put">▶ 入れるもの：銀行の入金明細 CSV</div>
+        <div class="out">◀ システムの動き：CSVを読取→「入金消込」で突合</div>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:28px;">フォルダIDは、Drive でフォルダを開いたときのURLから確認できます。</p>
+    <div class="url-hint">
+      https://drive.google.com/drive/folders/<span class="hl">1ABCxyz123456789</span><br>
+      <span class="cm">　　　　　　　　　　　　　　　　　　　　　↑ この部分がフォルダID</span>
+    </div>
+    <div class="note">
+      <b>セキュリティのヒント：</b> 各フォルダは「自分（運用者）」と「処理を実行するアカウント」だけが
+      アクセスできる権限にしておきます。請求書・入金明細は機密情報のため、共有範囲は最小限に。
+    </div>
+  </div>
+
+  <!-- ===== 設定シートの使い方 ===== -->
+  <div class="section">
+    <div class="section-title">Settings Sheet</div>
+    <h2>「設定」シートの使い方</h2>
+    <p class="lead">
+      システムの動作に必要な値は、すべて「設定」シートの<b>「値」列</b>に入力します（左の「キー名」は変更しない）。
+    </p>
+    <table>
+      <thead><tr><th>キー名</th><th>入力する値</th><th>取得・設定方法</th></tr></thead>
+      <tbody>
+        <tr><td><code>GEMINI_API_KEY</code></td><td>Gemini の APIキー</td><td><a href="https://aistudio.google.com/apikey">Google AI Studio</a> で「Create API key」して取得</td></tr>
+        <tr><td><code>INVOICE_FOLDER_ID</code></td><td>請求書フォルダのID</td><td>Drive のフォルダURLからコピー</td></tr>
+        <tr><td><code>REPORT_FOLDER_ID</code></td><td>レポート出力フォルダのID</td><td>同上</td></tr>
+        <tr><td><code>DEPOSIT_FOLDER_ID</code></td><td>入金CSVフォルダのID</td><td>同上</td></tr>
+        <tr><td><code>COMPANY_NAME</code></td><td>自社名（メール署名に使用）</td><td>任意で入力</td></tr>
+        <tr><td><code>COMPANY_EMAIL</code> / <code>COMPANY_TEL</code></td><td>連絡先（メール署名）</td><td>任意で入力</td></tr>
+        <tr><td><code>MANAGEMENT_FEE_PCT</code></td><td>管理手数料率（％）</td><td>例：<code>8</code> → 賃料の8%をレポートに自動計上</td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      キーが足りないときは「AI管理ツール」→「<b>サンプルマスター投入</b>」を一度実行すると、
+      不足している設定キーの行が自動で追加されます。
+    </div>
+  </div>
+
+  <!-- ===== セットアップ手順 ===== -->
+  <div class="section">
+    <div class="section-title">Setup</div>
+    <h2>はじめの準備（セットアップ手順）</h2>
+    <p class="lead">初回だけ、この順番で準備します。2回目以降は不要です。</p>
+    <div class="steps">
+      <div class="step">
+        <h4>Drive に3つのフォルダを作る</h4>
+        <p>「請求書」「レポート出力」「入金CSV」用のフォルダをそれぞれ作成します。</p>
+      </div>
+      <div class="step">
+        <h4>スプレッドシートで初期セットアップを実行</h4>
+        <p>「AI管理ツール」→「<code>初期セットアップ</code>」。必要なシートが一式作成されます（初回は権限承認のダイアログで「許可」）。</p>
+      </div>
+      <div class="step">
+        <h4>サンプルマスターを投入</h4>
+        <p>「AI管理ツール」→「<code>サンプルマスター投入</code>」。デモ用の物件・オーナー・テナントと、不足設定キーが入ります。</p>
+      </div>
+      <div class="step">
+        <h4>「設定」シートに値を入力</h4>
+        <p>上の表のとおり、APIキーと3つのフォルダID、会社情報を入力します。</p>
+      </div>
+      <div class="step">
+        <h4>マスターを自社データに差し替え（本番時）</h4>
+        <p>「マスター_物件 / オーナー / テナント」を実際の情報に置き換えます。テナントの<b>振込名義</b>は銀行CSVに出る名前で登録するのがコツ。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 月次の運用フロー ===== -->
+  <div class="section">
+    <div class="section-title">Monthly Flow</div>
+    <h2>毎月の運用の流れ</h2>
+    <p class="lead">準備が済めば、毎月の作業は「ファイルを置く → ボタンを押す」の繰り返しです。</p>
+    <div class="steps">
+      <div class="step">
+        <h4>請求書を「請求書フォルダ」に入れる</h4>
+        <p>届いた請求書のPDF・画像をアップロード。</p>
+      </div>
+      <div class="step">
+        <h4>OCR バッチ実行</h4>
+        <p>「AI管理ツール」→「<code>OCR バッチ実行</code>」で「請求書データ」に自動転記。「要確認」行だけ目視チェック。</p>
+      </div>
+      <div class="step">
+        <h4>銀行CSVを「入金CSVフォルダ」に入れて消込</h4>
+        <p>銀行から落とした入金明細CSVを入れ、「<code>入金CSV取込（消込）</code>」を実行。未入金・要確認を確認。</p>
+      </div>
+      <div class="step">
+        <h4>レポート生成 → メール送信</h4>
+        <p>「<code>レポート生成（全オーナー）</code>」でPDFを作成し、「<code>レポート一括メール送信</code>」でオーナーへ送付。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 操作メニュー ===== -->
+  <div class="section">
+    <div class="section-title">Operations</div>
+    <h2>操作メニュー一覧</h2>
+    <p class="lead">日常運用は基本的に下の3〜4操作だけで完結します。</p>
+    <table>
+      <thead><tr><th>メニュー</th><th>やること</th><th>頻度</th></tr></thead>
+      <tbody>
+        <tr><td>初期セットアップ</td><td>シート構造・初期データを作成</td><td>初回のみ</td></tr>
+        <tr><td>サンプルマスター投入</td><td>デモ用の物件・オーナー・テナントを投入</td><td>初回のみ</td></tr>
+        <tr><td><b>OCR バッチ実行</b></td><td>Drive の請求書を読み取り→転記</td><td>随時 / 定期</td></tr>
+        <tr><td><b>入金CSV取込（消込）</b></td><td>銀行CSVを取込→入金消込</td><td>月次</td></tr>
+        <tr><td><b>レポート生成（全オーナー）</b></td><td>オーナー別PDFを一括生成</td><td>月次</td></tr>
+        <tr><td><b>レポート一括メール送信</b></td><td>PDFをオーナーへ送付</td><td>月次</td></tr>
+        <tr><td>ダッシュボード更新</td><td>サマリーを再集計</td><td>随時</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 導入効果 ===== -->
+  <div class="section">
+    <div class="section-title">Impact</div>
+    <h2>導入前 / 導入後</h2>
+    <div class="ba">
+      <div class="ba-box before">
+        <h4>これまで（手作業）</h4>
+        <ul>
+          <li>請求書を1枚ずつ目視でExcelに手入力</li>
+          <li>オーナーごとに手でフィルタしてレポート作成</li>
+          <li>銀行明細とテナントを目視で突合・消込</li>
+          <li>滞納の発見が遅れる／転記ミスが起きる</li>
+          <li>件数が増えるほど工数が比例して増加</li>
+        </ul>
+      </div>
+      <div class="ba-box after">
+        <h4>このプロトタイプ（自動化）</h4>
+        <ul>
+          <li>ファイルを置けばAIが自動でデータ化</li>
+          <li>ボタン1つでオーナー別レポートを一括生成</li>
+          <li>銀行CSVから自動で名寄せ・消込</li>
+          <li>未入金・要確認を自動で炙り出し</li>
+          <li>件数が増えても操作はほぼ同じ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 制約・今後 ===== -->
+  <div class="section">
+    <div class="section-title">Scope &amp; Next</div>
+    <h2>現時点の制約と今後の拡張余地</h2>
+    <p class="lead">本プロトタイプは「動いて確認できる」ことを目的にしたもので、運用に向けては以下が拡張ポイントです。</p>
+    <ul class="plain">
+      <li><b>名義照合はルールベース</b>：現状は振込名義の部分一致。カナや略称のブレはAI（Gemini）名寄せで吸収する拡張が可能。</li>
+      <li><b>消込は当月単位</b>：複数月にまたがる入金・前受/未収の繰越は今後の対応範囲。</li>
+      <li><b>オーナーへの送金管理（後工程）</b>：「管理会社→オーナー」への振込・残高管理は未実装（次フェーズ候補）。</li>
+      <li><b>マスター整備が前提</b>：物件・オーナー・テナントのマスター精度が自動化品質に直結。</li>
+      <li><b>通貨はMYR想定</b>：複数通貨・為替の扱いは要件に応じて拡張。</li>
+    </ul>
+    <div class="note">
+      まずは実データのサンプル（請求書・銀行CSV・現状のレポート様式）をいただければ、
+      実運用に近い形でのチューニングへ進められます。
+    </div>
+  </div>
+
+  <div class="footer">
+    不動産管理業務 AI自動化プロトタイプ ／ 機能一覧資料<br>
+    ※ 本資料は現時点のプロトタイプ仕様に基づきます。
+  </div>
+
+</body>
+</html>

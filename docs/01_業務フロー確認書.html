@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務フロー確認書 ─ 不動産管理業務AI自動化</title>
+<style>
+  @page { margin: 20mm 15mm; size: A4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #1a1a1a;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    font-size: 14px;
+  }
+  .header {
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #64748b;
+  }
+  .header .meta {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 4px solid #2563eb;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #334155;
+    margin: 20px 0 8px;
+  }
+  p { margin-bottom: 10px; }
+  .note {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #0369a1;
+  }
+  .note strong { color: #0c4a6e; }
+  .confirm-box {
+    background: #fefce8;
+    border: 1px solid #fde047;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #854d0e;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 20px;
+    font-size: 13px;
+  }
+  th {
+    background: #f1f5f9;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  td {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .flow-section {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .flow-step:last-child { margin-bottom: 0; }
+  .step-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .step-content { flex: 1; }
+  .step-content strong { display: block; margin-bottom: 2px; }
+  .step-arrow {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 18px;
+    margin: 4px 0;
+    padding-left: 40px;
+  }
+  .checkbox-area {
+    margin: 24px 0;
+    padding: 16px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+  }
+  .checkbox-area h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #1e293b;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .checkbox-item input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .free-text {
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    margin-top: 8px;
+    padding: 8px;
+    font-size: 13px;
+  }
+  .page-break { page-break-before: always; }
+  @media print {
+    body { padding: 0; max-width: 100%; }
+    .no-print { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>業務フロー確認書</h1>
+  <div class="subtitle">不動産管理業務 AI自動化プロジェクト</div>
+  <div class="meta">
+    作成日: ____年__月__日 ／ 作成者: ________<br>
+    貴社名: ______________________________
+  </div>
+</div>
+
+<div class="note">
+  <strong>本書の目的:</strong>
+  AI自動化の対象となる現在の業務フローについて、弊社の理解が正しいかご確認いただくための資料です。各項目について「合っている」「違う」をチェックし、相違点や補足がありましたらご記入ください。
+</div>
+
+<!-- ==================== 業務1 ==================== -->
+<h2>業務1: 請求書データ入力</h2>
+
+<h3>弊社の理解</h3>
+<div class="flow-section">
+  <div class="flow-step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <strong>請求書の受領</strong>
+      各種請求書（管理費、修繕費、水道光熱費 等）が紙・PDF・メール等で届く
+    </div>
+  </div>
+  <div class="step-arrow">▼</div>
+  <div class="flow-step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <strong>Excelへの手入力</strong>
+      マレーシア人スタッフが請求書の内容をExcel（またはスプレッドシート）に手打ちで入力
+    </div>
+  </div>
+  <div class="step-arrow">▼</div>
+  <div class="flow-step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <strong>データの管理・蓄積</strong>
+      入力されたデータが物件ごと・月ごとに蓄積される
+    </div>
+  </div>
+</div>
+
+<div class="checkbox-area">
+  <h3>ご確認</h3>
+  <div class="checkbox-item">
+    <input type="checkbox"> 上記の理解で概ね合っている
+  </div>
+  <div class="checkbox-item">
+    <input type="checkbox"> 一部異なる（下記に詳細をご記入ください）
+  </div>
+  <div class="checkbox-item">
+    <input type="checkbox"> 大きく異なる（下記に詳細をご記入ください）
+  </div>
+  <textarea class="free-text" placeholder="相違点・補足事項があればご記入ください"></textarea>
+</div>
+
+<table>
+  <tr><th style="width:40%">確認項目</th><th>弊社の想定</th><th style="width:25%">実際（ご記入欄）</th></tr>
+  <tr><td>請求書の受取方法</td><td>紙郵送・メール添付</td><td></td></tr>
+  <tr><td>請求書の言語</td><td>英語・マレー語 等</td><td></td></tr>
+  <tr><td>入力先のツール</td><td>Excel / Google スプレッドシート</td><td></td></tr>
+  <tr><td>入力する主な項目</td><td>日付・物件名・費目・金額・支払先</td><td></td></tr>
+  <tr><td>月間の請求書枚数</td><td>（不明）</td><td></td></tr>
+  <tr><td>入力の頻度</td><td>都度（日次〜週次）</td><td></td></tr>
+  <tr><td>入力担当者数</td><td>（不明）</td><td></td></tr>
+  <tr><td>請求書のフォーマット</td><td>業者ごとにバラバラ</td><td></td></tr>
+</table>
+
+<!-- ==================== 業務2 ==================== -->
+<div class="page-break"></div>
+<h2>業務2: オーナー別レポート作成・送付</h2>
+
+<h3>弊社の理解</h3>
+<div class="flow-section">
+  <div class="flow-step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <strong>データの絞り込み</strong>
+      蓄積された請求書データを、スプレッドシートのフィルタ機能でオーナー別・物件別に絞り込む
+    </div>
+  </div>
+  <div class="step-arrow">▼</div>
+  <div class="flow-step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <strong>レポートの整形</strong>
+      絞り込んだデータをレポート形式に整えて、各種賃料・費用の提案内容をまとめる
+    </div>
+  </div>
+  <div class="step-arrow">▼</div>
+  <div class="flow-step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <strong>オーナーへの送付</strong>
+      完成したレポートをメール等でオーナーに送付する
+    </div>
+  </div>
+</div>
+
+<div class="checkbox-area">
+  <h3>ご確認</h3>
+  <div class="checkbox-item">
+    <input type="checkbox"> 上記の理解で概ね合っている
+  </div>
+  <div class="checkbox-item">
+    <input type="checkbox"> 一部異なる（下記に詳細をご記入ください）
+  </div>
+  <div class="checkbox-item">
+    <input type="checkbox"> 大きく異なる（下記に詳細をご記入ください）
+  </div>
+  <textarea class="free-text" placeholder="相違点・補足事項があればご記入ください"></textarea>
+</div>
+
+<table>
+  <tr><th style="width:40%">確認項目</th><th>弊社の想定</th><th style="width:25%">実際（ご記入欄）</th></tr>
+  <tr><td>レポートの作成頻度</td><td>月次</td><td></td></tr>
+  <tr><td>レポートの送付形式</td><td>PDF or スプレッドシート共有</td><td></td></tr>
+  <tr><td>送付方法</td><td>メール添付</td><td></td></tr>
+  <tr><td>レポートに含まれる項目</td><td>月別収支・費目内訳・差引残高</td><td></td></tr>
+  <tr><td>オーナー数</td><td>（不明）</td><td></td></tr>
+  <tr><td>管理物件数</td><td>（不明）</td><td></td></tr>
+  <tr><td>送付前の承認フロー</td><td>あり？なし？</td><td></td></tr>
+  <tr><td>レポートの言語</td><td>英語？日本語？</td><td></td></tr>
+</table>
+
+<!-- ==================== 業務3 ==================== -->
+<h2>業務3: 入金管理・消込</h2>
+
+<h3>弊社の理解</h3>
+<div class="flow-section">
+  <div class="flow-step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <strong>賃料等の請求</strong>
+      オーナーに対して賃料・管理費等を請求する（レポートの送付と連動）
+    </div>
+  </div>
+  <div class="step-arrow">▼</div>
+  <div class="flow-step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <strong>入金の確認</strong>
+      銀行口座への入金を確認し、どのオーナーからの入金かを特定する
+    </div>
+  </div>
+  <div class="step-arrow">▼</div>
+  <div class="flow-step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <strong>消込処理</strong>
+      請求と入金を突合し、スプレッドシート上で消込（ステータス更新）を行う
+    </div>
+  </div>
+</div>
+
+<div class="checkbox-area">
+  <h3>ご確認</h3>
+  <div class="checkbox-item">
+    <input type="checkbox"> 上記の理解で概ね合っている
+  </div>
+  <div class="checkbox-item">
+    <input type="checkbox"> 一部異なる（下記に詳細をご記入ください）
+  </div>
+  <div class="checkbox-item">
+    <input type="checkbox"> 大きく異なる（下記に詳細をご記入ください）
+  </div>
+  <textarea class="free-text" placeholder="相違点・補足事項があればご記入ください"></textarea>
+</div>
+
+<table>
+  <tr><th style="width:40%">確認項目</th><th>弊社の想定</th><th style="width:25%">実際（ご記入欄）</th></tr>
+  <tr><td>消込のタイミング</td><td>月末一括？都度？</td><td></td></tr>
+  <tr><td>入金確認の方法</td><td>ネットバンキングで目視確認</td><td></td></tr>
+  <tr><td>突合のキー情報</td><td>金額・オーナー名・日付</td><td></td></tr>
+  <tr><td>部分入金への対応</td><td>（不明）</td><td></td></tr>
+  <tr><td>未入金時の対応</td><td>（不明）催促連絡？</td><td></td></tr>
+  <tr><td>利用している銀行</td><td>（不明）</td><td></td></tr>
+  <tr><td>銀行CSVのダウンロード可否</td><td>（不明）</td><td></td></tr>
+  <tr><td>消込完了後のアクション</td><td>（不明）</td><td></td></tr>
+</table>
+
+<!-- ==================== その他 ==================== -->
+<div class="page-break"></div>
+<h2>その他の確認事項</h2>
+
+<table>
+  <tr><th style="width:40%">確認項目</th><th>弊社の想定</th><th style="width:25%">実際（ご記入欄）</th></tr>
+  <tr><td>上記3業務以外にも<br>自動化したい業務はありますか？</td><td>─</td><td></td></tr>
+  <tr><td>現在のGoogle Workspace契約</td><td>（不明）</td><td></td></tr>
+  <tr><td>既存の会計ソフト</td><td>（不明）Xero? QuickBooks?</td><td></td></tr>
+  <tr><td>データのセキュリティ要件</td><td>（不明）</td><td></td></tr>
+  <tr><td>最も優先度の高い業務</td><td>請求書入力？</td><td></td></tr>
+  <tr><td>希望するスケジュール感</td><td>（不明）</td><td></td></tr>
+</table>
+
+<div class="checkbox-area">
+  <h3>自由記入欄</h3>
+  <p style="font-size:13px; color:#64748b; margin-bottom:8px;">上記以外にお気づきの点、ご要望等があればご記入ください。</p>
+  <textarea class="free-text" style="min-height:100px;" placeholder=""></textarea>
+</div>
+
+<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8;">
+  ご記入いただいた内容をもとに、より正確なご提案書・お見積りを作成いたします。<br>
+  ご不明点がございましたら、お気軽にお問い合わせください。
+</div>
+
+</body>
+</html>

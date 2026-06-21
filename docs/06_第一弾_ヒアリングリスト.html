@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一弾案件 ヒアリングリスト ─ 不動産管理業務AI自動化</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #1a1a1a; line-height: 1.7; background: #f5f5f5; font-size: 14px;
+  }
+
+  .cover { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: #fff; padding: 56px 40px; text-align: center; }
+  .cover .badge { display: inline-block; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: 4px 16px; font-size: 12px; letter-spacing: 1px; margin-bottom: 18px; }
+  .cover h1 { font-size: 28px; font-weight: 700; margin-bottom: 10px; }
+  .cover .sub { font-size: 16px; opacity: .9; }
+
+  .section { max-width: 860px; margin: 0 auto; padding: 40px 24px 4px; }
+  .intro { background: #e8f0fe; border-radius: 12px; padding: 20px 24px; max-width: 860px; margin: 36px auto 0; }
+  .intro p { font-size: 14px; color: #1a56c4; }
+  .intro b { color: #0d47a1; }
+
+  .block { background: #fff; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.1); overflow: hidden; margin-bottom: 20px; }
+  .block-head { padding: 16px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #eef0f2; }
+  .block-head .n { width: 32px; height: 32px; border-radius: 50%; background: #1a73e8; color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .block-head h2 { font-size: 17px; color: #202124; }
+  .block-head .tag { margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .tag.must { background: #fce8e6; color: #c5221f; }
+  .tag.want { background: #fef7e0; color: #b06000; }
+  .block-body { padding: 8px 22px 18px; }
+
+  .check { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px dashed #eef0f2; }
+  .check:last-child { border-bottom: none; }
+  .check .box { width: 18px; height: 18px; border: 2px solid #1a73e8; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+  .check .box.done { background: #34a853; border-color: #34a853; position: relative; }
+  .check .box.done::after { content: "✓"; color: #fff; font-size: 13px; font-weight: 700; position: absolute; top: -3px; left: 2px; }
+  .check.received .txt { color: #5f6368; }
+  .check .txt { font-size: 14px; color: #202124; }
+  .check .txt .hint { display: block; font-size: 12px; color: #80868b; margin-top: 2px; }
+  .check .txt .recv { display: inline-block; font-size: 11px; font-weight: 700; color: #0d652d; background: #e6f4ea; border-radius: 10px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; }
+
+  .note { background: #e6f4ea; border-left: 4px solid #34a853; border-radius: 6px; padding: 14px 18px; font-size: 13px; color: #0d652d; margin: 4px auto 0; max-width: 860px; }
+  .note.gray { background: #f1f3f4; border-left-color: #9aa0a6; color: #3c4043; }
+  .note b { color: #0b431f; }
+
+  .footer { text-align: center; color: #80868b; font-size: 12px; padding: 36px 24px 56px; }
+
+  @media print { body { background: #fff; } .block { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+  <div class="cover">
+    <div class="badge">第一弾案件 ヒアリングリスト</div>
+    <h1>ご準備・教えていただきたいこと</h1>
+    <div class="sub">不動産管理業務の AI自動化（請求書・レポート・消込／問い合わせ対応）</div>
+  </div>
+
+  <div class="intro">
+    <p>
+      <b>請求書・テナント契約一覧・オーナーリストは拝受しました。ありがとうございます。</b>
+      実物を拝見して具体的な論点が見えてきましたので、<b>下記 5 の「具体的な確認事項」</b>を中心にご回答いただけると助かります。
+      残りのサンプル（レポート・入金明細）も合わせてお願いできれば、自動化の形が一気に固まります。
+      <br>※ 氏名・金額などはマスキング（黒塗り）いただいて構いません。
+    </p>
+  </div>
+
+  <!-- ① サンプル資料 -->
+  <div class="section">
+    <div class="block">
+      <div class="block-head">
+        <div class="n">1</div>
+        <h2>いただきたいサンプル資料</h2>
+        <span class="tag must">最優先</span>
+      </div>
+      <div class="block-body">
+        <div class="check received"><div class="box done"></div><div class="txt">請求書のサンプル<span class="recv">拝受済み</span><span class="hint">電気(TNB)・水道・管理費・修繕・Assessment fee 等を確認しました。追加の種類があればお願いします</span></div></div>
+        <div class="check received"><div class="box done"></div><div class="txt">テナント契約情報一覧<span class="recv">拝受済み</span><span class="hint">物件名・区画番号・契約期間・家賃・敷金 等のフォーマットを確認しました</span></div></div>
+        <div class="check received"><div class="box done"></div><div class="txt">オーナーリスト<span class="recv">拝受済み</span><span class="hint">物件名・部屋番号・オーナー名の対応表を確認しました</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">現在オーナーへ送っているレポート<span class="hint">実際の月次レポート・収支明細の現物（フォーマットが分かるもの）。<b>まだ未受領です</b></span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">入金明細（消込の検証用）<span class="hint">銀行のCSV・通帳の写し・入金一覧など。実物（CIMB等）を1ヶ月分。<b>まだ未受領です</b></span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 仲介会社からの問い合わせ -->
+  <div class="section">
+    <div class="block">
+      <div class="block-head">
+        <div class="n">2</div>
+        <h2>仲介会社からの問い合わせ</h2>
+        <span class="tag must">最優先</span>
+      </div>
+      <div class="block-body">
+        <div class="check"><div class="box"></div><div class="txt">過去の問い合わせ一覧・履歴<span class="hint">メールの転送やスクリーンショットでも可。直近のものが数件あると助かります</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">よくある問い合わせの種類<span class="hint">例：空き物件の照会／写真の依頼／内見・鍵あけの手配 など</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">今の回答のしかた<span class="hint">誰が・何を見て・どう返しているか（定型文があればそれも）</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ テナントからの問い合わせ -->
+  <div class="section">
+    <div class="block">
+      <div class="block-head">
+        <div class="n">3</div>
+        <h2>テナントからの問い合わせ</h2>
+        <span class="tag must">最優先</span>
+      </div>
+      <div class="block-body">
+        <div class="check"><div class="box"></div><div class="txt">過去のやりとり一覧<span class="hint">WhatsApp・メールなどの実例（個人情報はマスキング可）</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">どんなケースに分かれるか<span class="hint">例：設備故障・修繕／緊急トラブル／契約・退去／支払い／一般質問 など</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">ケースごとの回答・対応パターン<span class="hint">それぞれ「誰に連絡し、どう対応するか」。定型の返信文があれば</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">緊急時の対応<span class="hint">水漏れ・停電などの場合の連絡先・対応の流れ</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 最小限の確認 -->
+  <div class="section">
+    <div class="block">
+      <div class="block-head">
+        <div class="n">4</div>
+        <h2>かんたんな確認（運用まわり）</h2>
+        <span class="tag want">分かる範囲で</span>
+      </div>
+      <div class="block-body">
+        <div class="check"><div class="box"></div><div class="txt">関係者と役割<span class="hint">誰が請求処理・レポート作成・問い合わせ対応をしているか</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">今お使いのツール<span class="hint">メール・WhatsApp・会計ソフト・Google or Microsoft など</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">月次のタイミング<span class="hint">いつ請求が来て、いつレポートを送るか（締めの時期）</span></div></div>
+        <div class="check"><div class="box"></div><div class="txt">業者への手配方法<span class="hint">修繕業者のリストや、依頼の出し方（あれば）</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ サンプルを踏まえた具体確認 -->
+  <div class="section">
+    <div class="block">
+      <div class="block-head">
+        <div class="n">5</div>
+        <h2>サンプルを踏まえた具体的な確認事項</h2>
+        <span class="tag must">最優先</span>
+      </div>
+      <div class="block-body">
+
+        <div class="check"><div class="box"></div><div class="txt">請求書ファイルの命名ルール<span class="hint">いただいた電気代は本文に部屋番号が無く、ファイル名「TNB Mews A-36-1_May2026」にだけ部屋番号が入っていました。<b>ファイル名に必ず「建物名＋部屋番号」を入れる運用ですか？</b>ルールが決まっていれば教えてください</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">建物名の正式名称と別表記の一覧<span class="hint">請求書では建物名が住所表記でしか出ないことがあります（例：電気代は「PANGSAPURI SERVIS MEWS」＝The Mews）。<b>各建物の正式名 ⇔ 請求書/銀行で出てくる表記</b>の対応が分かると照合精度が上がります</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">口座番号での部屋特定<span class="hint">電気・水道は請求書に契約口座番号（NO. AKAUN 等）が必ず載ります。<b>「口座番号 ⇔ 部屋」の対応表</b>があれば最も確実に紐付けできます（あれば理想、無くても可）</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">部屋番号の表記ルール<span class="hint">オーナーリストに「29」（ハイフン無し）「20-G」「T1-19-3a」等の揺れがありました。<b>正式な表記（ハイフン有無・大文字小文字）</b>に決まりはありますか？</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">家賃入金時の銀行摘要<span class="hint">消込はこの摘要が鍵です。<b>家賃が振り込まれた時、明細の摘要に「部屋番号」は必ず入りますか？</b>（入らない／テナント名のみ のケースがあれば教えてください）</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">銀行明細の取得形式<span class="hint">CIMB等の明細は <b>CSVでダウンロードできますか？ それともPDFのみ</b>ですか？使っている銀行名も教えてください</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">オーナーへのレポート送付先<span class="hint">オーナーリストにメールが無かったため、<b>各オーナーのレポート送付先メール</b>をいただけますか（自動送信に使います）</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">管理手数料・費用負担のルール<span class="hint"><b>管理手数料率はオーナー一律ですか／個別ですか。</b>修繕費など、オーナー負担とテナント負担の切り分けルールも教えてください</span></div></div>
+
+        <div class="check"><div class="box"></div><div class="txt">同名・法人/個人オーナーの区別<span class="hint">「Ito」（個人）と「Hideo Ito Holdings Sdn Bhd」（法人）は別オーナーという理解で合っていますか？同名オーナーの区別方法があれば</span></div></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>進め方：</b> 5 の具体確認と、残りのサンプル（レポート・入金明細）をいただければ、
+    実際に動くモックに反映してご確認いただけます。2〜4 は分かる範囲で大丈夫です。
+  </div>
+  <div class="note gray" style="margin-top:12px;">
+    お渡しいただく資料に迷ったら「とりあえず現物のコピー」で問題ありません。整形・要約はこちらで行います。
+  </div>
+
+  <div class="footer">
+    不動産管理業務 AI自動化 ／ 第一弾案件 ヒアリングリスト
+  </div>
+
+</body>
+</html>

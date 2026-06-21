@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヒアリングシート ─ 不動産管理業務AI自動化</title>
+<style>
+  @page { margin: 18mm 14mm; size: A4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #1a1a1a;
+    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    font-size: 13.5px;
+  }
+  .header {
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; color: #1e293b; }
+  .header .subtitle { font-size: 14px; color: #64748b; margin-top: 2px; }
+  .header .meta {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 24px;
+    font-size: 13px;
+    color: #475569;
+  }
+  .header .meta span { border-bottom: 1px dotted #cbd5e1; padding-bottom: 2px; }
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: #2563eb;
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin: 28px 0 14px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e40af;
+    margin: 18px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #dbeafe;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px;
+    font-size: 13px;
+  }
+  th {
+    background: #f1f5f9;
+    font-weight: 600;
+    text-align: left;
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  td {
+    padding: 7px 10px;
+    border: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  td.fill {
+    background: #fffbeb;
+    min-width: 200px;
+  }
+  tr:nth-child(even) td:not(.fill) { background: #f8fafc; }
+  .category-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #2563eb;
+    background: #eff6ff;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .required {
+    font-size: 10px;
+    font-weight: 700;
+    color: #dc2626;
+    background: #fef2f2;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+  .note-box {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 12.5px;
+    color: #0369a1;
+  }
+  .sample-request {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin: 14px 0;
+  }
+  .sample-request h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 8px;
+  }
+  .sample-request table th { background: #fef9c3; }
+  .sample-request table td.fill { background: #fff; }
+  .free-area {
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 6px;
+    margin-top: 4px;
+    background: #fffbeb;
+  }
+  .page-break { page-break-before: always; }
+  .footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  @media print {
+    body { padding: 0; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>ヒアリングシート</h1>
+  <div class="subtitle">不動産管理業務 AI自動化プロジェクト</div>
+  <div class="meta">
+    <span>貴社名: ______________________________</span>
+    <span>ご担当者名: __________________________</span>
+    <span>ヒアリング日: ____年____月____日</span>
+    <span>ヒアリング担当: ______________________</span>
+  </div>
+</div>
+
+<!-- ==================== サンプル依頼 ==================== -->
+<div class="sample-request">
+  <h4>サンプル資料のご提供のお願い</h4>
+  <p style="font-size:12.5px; color:#78350f; margin-bottom:10px;">
+    正確なシステム設計のために、下記の資料の実物サンプルをご提供ください。<br>
+    機密情報はマスキング（黒塗り）いただいて構いません。
+  </p>
+  <table>
+    <tr>
+      <th style="width:5%">No.</th>
+      <th>お願いする資料</th>
+      <th style="width:15%">必須度</th>
+      <th class="fill" style="width:25%">提供可否・備考</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>受領する請求書のサンプル<strong>（全種類・全パターン）</strong><br>
+        <span style="font-size:11px; color:#64748b;">管理費、修繕費、水道光熱費、保険、税金など種類別に各1枚以上</span></td>
+      <td><span class="required">必須</span></td>
+      <td class="fill"></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>現在使用しているExcel/スプレッドシートの実物<br>
+        <span style="font-size:11px; color:#64748b;">データ入力用のシート。数行分のサンプルデータ入り</span></td>
+      <td><span class="required">必須</span></td>
+      <td class="fill"></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>オーナー向けレポートの完成品サンプル<strong>（全種類）</strong><br>
+        <span style="font-size:11px; color:#64748b;">月次報告、年次報告、臨時報告等がある場合はそれぞれ</span></td>
+      <td><span class="required">必須</span></td>
+      <td class="fill"></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>消込管理に使用しているシート/帳票のサンプル</td>
+      <td><span class="required">必須</span></td>
+      <td class="fill"></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>オーナーへの送付メールのサンプル（件名・本文）</td>
+      <td style="font-size:12px;">あると助かる</td>
+      <td class="fill"></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>銀行の入金明細のサンプル（CSV or 画面キャプチャ）</td>
+      <td style="font-size:12px;">あると助かる</td>
+      <td class="fill"></td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>物件一覧・オーナー一覧のマスターデータ</td>
+      <td style="font-size:12px;">あると助かる</td>
+      <td class="fill"></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ==================== 1. 組織・体制 ==================== -->
+<h2>1. 組織・体制</h2>
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:40%">質問事項</th><th style="width:20%">回答の例</th><th class="fill">ご回答</th></tr>
+  <tr><td>1-1</td><td>管理物件数は何件ですか？</td><td>50件、200件 等</td><td class="fill"></td></tr>
+  <tr><td>1-2</td><td>オーナー数は何名ですか？</td><td>30名、100名 等</td><td class="fill"></td></tr>
+  <tr><td>1-3</td><td>物件の種別は？<br><span style="font-size:11px; color:#64748b;">（住居、オフィス、商業、混在 等）</span></td><td>住居のみ / 混在</td><td class="fill"></td></tr>
+  <tr><td>1-4</td><td>データ入力を担当しているスタッフは何名ですか？</td><td>1名、3名 等</td><td class="fill"></td></tr>
+  <tr><td>1-5</td><td>入力業務にかかっている時間（月間）は？</td><td>月20時間、月40時間 等</td><td class="fill"></td></tr>
+  <tr><td>1-6</td><td>レポート作成にかかっている時間（月間）は？</td><td>月10時間 等</td><td class="fill"></td></tr>
+  <tr><td>1-7</td><td>消込業務にかかっている時間（月間）は？</td><td>月5時間 等</td><td class="fill"></td></tr>
+</table>
+
+<!-- ==================== 2. 請求書入力 ==================== -->
+<h2>2. 請求書データ入力の詳細</h2>
+
+<h3>2-A. 請求書の種類・形式</h3>
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:45%">質問事項</th><th class="fill">ご回答</th></tr>
+  <tr><td>2-1</td><td>受領する請求書の種類を全て教えてください<br><span style="font-size:11px; color:#64748b;">（管理費、修繕費、水道光熱費、保険、固定資産税、仲介手数料 等）</span></td><td class="fill"></td></tr>
+  <tr><td>2-2</td><td>請求書の受取方法は？<br><span style="font-size:11px; color:#64748b;">（紙郵送、メール添付PDF、オンラインポータル、FAX 等）</span></td><td class="fill"></td></tr>
+  <tr><td>2-3</td><td>請求書の言語は？（英語、マレー語、中国語、日本語、混在 等）</td><td class="fill"></td></tr>
+  <tr><td>2-4</td><td>月間に届く請求書の枚数はおおよそ何枚ですか？</td><td class="fill"></td></tr>
+  <tr><td>2-5</td><td>請求書のフォーマットは業者ごとに異なりますか？何パターンくらいありますか？</td><td class="fill"></td></tr>
+  <tr><td>2-6</td><td>手書きの請求書はありますか？</td><td class="fill"></td></tr>
+</table>
+
+<h3>2-B. 入力項目</h3>
+<div class="note-box">
+  以下は想定項目です。実際に入力している項目に○をつけ、不足があれば追記してください。
+</div>
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:30%">想定項目</th><th style="width:15%">入力している<br>(○ / ×)</th><th class="fill">補足（項目名が異なる場合 等）</th></tr>
+  <tr><td>a</td><td>日付（請求日 / 支払期日）</td><td></td><td class="fill"></td></tr>
+  <tr><td>b</td><td>物件名 / 物件ID</td><td></td><td class="fill"></td></tr>
+  <tr><td>c</td><td>費目（カテゴリ）</td><td></td><td class="fill"></td></tr>
+  <tr><td>d</td><td>金額（税抜 / 税込）</td><td></td><td class="fill"></td></tr>
+  <tr><td>e</td><td>税額 / 税率</td><td></td><td class="fill"></td></tr>
+  <tr><td>f</td><td>支払先（業者名）</td><td></td><td class="fill"></td></tr>
+  <tr><td>g</td><td>支払先口座情報</td><td></td><td class="fill"></td></tr>
+  <tr><td>h</td><td>請求書番号</td><td></td><td class="fill"></td></tr>
+  <tr><td>i</td><td>オーナーID / オーナー名</td><td></td><td class="fill"></td></tr>
+  <tr><td>j</td><td>備考 / メモ</td><td></td><td class="fill"></td></tr>
+  <tr><td>k</td><td>支払ステータス</td><td></td><td class="fill"></td></tr>
+  <tr><td></td><td>その他（追記）:</td><td></td><td class="fill"></td></tr>
+  <tr><td></td><td>その他（追記）:</td><td></td><td class="fill"></td></tr>
+</table>
+
+<!-- ==================== 3. レポート ==================== -->
+<div class="page-break"></div>
+<h2>3. オーナー別レポートの詳細</h2>
+
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:45%">質問事項</th><th class="fill">ご回答</th></tr>
+  <tr><td>3-1</td><td>レポートの作成頻度は？（月次、四半期、年次、随時 等）</td><td class="fill"></td></tr>
+  <tr><td>3-2</td><td>レポートの種類は何種類ありますか？<br><span style="font-size:11px; color:#64748b;">（月次収支報告、年次サマリー、賃料改定提案 等）</span></td><td class="fill"></td></tr>
+  <tr><td>3-3</td><td>レポートに含まれる主な項目は？<br><span style="font-size:11px; color:#64748b;">（月別収支、費目別内訳、前月比較、差引残高 等）</span></td><td class="fill"></td></tr>
+  <tr><td>3-4</td><td>レポートの送付形式は？（PDF、Excel、スプレッドシート共有リンク 等）</td><td class="fill"></td></tr>
+  <tr><td>3-5</td><td>レポートの言語は？</td><td class="fill"></td></tr>
+  <tr><td>3-6</td><td>送付先はオーナー本人のみですか？代理人やCC先はありますか？</td><td class="fill"></td></tr>
+  <tr><td>3-7</td><td>送付前に上長の承認フローはありますか？</td><td class="fill"></td></tr>
+  <tr><td>3-8</td><td>1件あたりのレポート作成にかかる時間は？</td><td class="fill"></td></tr>
+  <tr><td>3-9</td><td>「各種賃料などをオーナーに提案する」とは具体的にどういった内容ですか？<br><span style="font-size:11px; color:#64748b;">（賃料改定の提案？経費の承認依頼？収支報告のみ？）</span></td><td class="fill"></td></tr>
+</table>
+
+<!-- ==================== 4. 消込 ==================== -->
+<h2>4. 入金管理・消込の詳細</h2>
+
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:45%">質問事項</th><th class="fill">ご回答</th></tr>
+  <tr><td>4-1</td><td>「消込的なもの」とは具体的にどのような作業ですか？<br><span style="font-size:11px; color:#64748b;">（請求額と入金額の突合？ オーナーへの送金管理？ 業者への支払管理？）</span></td><td class="fill"></td></tr>
+  <tr><td>4-2</td><td>消込の対象は何ですか？<br><span style="font-size:11px; color:#64748b;">（テナントからの賃料入金？ オーナーへの送金？ 業者への支払？ 全て？）</span></td><td class="fill"></td></tr>
+  <tr><td>4-3</td><td>消込の頻度は？（都度、週次、月次 等）</td><td class="fill"></td></tr>
+  <tr><td>4-4</td><td>入金データの確認方法は？<br><span style="font-size:11px; color:#64748b;">（ネットバンキングで目視、銀行CSVダウンロード、通帳記帳 等）</span></td><td class="fill"></td></tr>
+  <tr><td>4-5</td><td>利用している銀行名は？（ネットバンキングのCSV出力は可能ですか？）</td><td class="fill"></td></tr>
+  <tr><td>4-6</td><td>消込の突合キーは何を使っていますか？<br><span style="font-size:11px; color:#64748b;">（金額の一致、振込人名、振込日 等）</span></td><td class="fill"></td></tr>
+  <tr><td>4-7</td><td>部分入金や過払いは発生しますか？その場合どう対応していますか？</td><td class="fill"></td></tr>
+  <tr><td>4-8</td><td>未入金（滞納）の場合の対応フローは？<br><span style="font-size:11px; color:#64748b;">（催促メール、電話、法的手続き 等）</span></td><td class="fill"></td></tr>
+  <tr><td>4-9</td><td>通貨は MYR のみですか？多通貨はありますか？</td><td class="fill"></td></tr>
+</table>
+
+<!-- ==================== 5. IT環境 ==================== -->
+<div class="page-break"></div>
+<h2>5. IT環境・技術要件</h2>
+
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:45%">質問事項</th><th class="fill">ご回答</th></tr>
+  <tr><td>5-1</td><td>現在のスプレッドシート環境は？<br><span style="font-size:11px; color:#64748b;">（Google スプレッドシート / Microsoft Excel / 両方併用）</span></td><td class="fill"></td></tr>
+  <tr><td>5-2</td><td>Google Workspaceの契約はありますか？<br><span style="font-size:11px; color:#64748b;">（プラン名: Business Starter / Standard / Plus 等）</span></td><td class="fill"></td></tr>
+  <tr><td>5-3</td><td>Google Drive は業務で使用していますか？</td><td class="fill"></td></tr>
+  <tr><td>5-4</td><td>既存の会計ソフトとの連携は必要ですか？<br><span style="font-size:11px; color:#64748b;">（ソフト名: Xero, QuickBooks, SQL Accounting 等）</span></td><td class="fill"></td></tr>
+  <tr><td>5-5</td><td>社内メールは Gmail ですか？</td><td class="fill"></td></tr>
+  <tr><td>5-6</td><td>社内コミュニケーションツールは？（Slack, Teams, LINE 等）</td><td class="fill"></td></tr>
+  <tr><td>5-7</td><td>データのセキュリティ要件はありますか？<br><span style="font-size:11px; color:#64748b;">（個人情報保護法への対応、データ保管場所の制約 等）</span></td><td class="fill"></td></tr>
+  <tr><td>5-8</td><td>スタッフのITスキルレベルは？<br><span style="font-size:11px; color:#64748b;">（スプレッドシートの基本操作ができる / マクロが書ける 等）</span></td><td class="fill"></td></tr>
+</table>
+
+<!-- ==================== 6. 要望 ==================== -->
+<h2>6. ご要望・優先度</h2>
+
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:45%">質問事項</th><th class="fill">ご回答</th></tr>
+  <tr><td>6-1</td><td>3つの業務のうち、最も工数がかかっている（困っている）のはどれですか？<br><span style="font-size:11px; color:#64748b;">（① 請求書入力 ② レポート作成 ③ 消込）</span></td><td class="fill"></td></tr>
+  <tr><td>6-2</td><td>自動化の優先度が最も高い業務はどれですか？</td><td class="fill"></td></tr>
+  <tr><td>6-3</td><td>絶対にミスが許されない業務はありますか？<br><span style="font-size:11px; color:#64748b;">（例: 金額の間違い、送付先の間違い 等）</span></td><td class="fill"></td></tr>
+  <tr><td>6-4</td><td>現状の運用で特に困っていること・不満はありますか？</td><td class="fill"></td></tr>
+  <tr><td>6-5</td><td>将来的に追加したい機能はありますか？<br><span style="font-size:11px; color:#64748b;">（ダッシュボード、テナント向けポータル、予算管理 等）</span></td><td class="fill"></td></tr>
+  <tr><td>6-6</td><td>希望のスケジュール感は？<br><span style="font-size:11px; color:#64748b;">（いつまでに稼働開始したい 等）</span></td><td class="fill"></td></tr>
+  <tr><td>6-7</td><td>予算感のイメージはありますか？<br><span style="font-size:11px; color:#64748b;">（初期開発費 + 月額ランニングコストの上限感 等）</span></td><td class="fill"></td></tr>
+</table>
+
+<!-- ==================== 7. 補足 ==================== -->
+<h2>7. その他・自由記入</h2>
+
+<table>
+  <tr><th style="width:5%">No.</th><th style="width:45%">質問事項</th><th class="fill">ご回答</th></tr>
+  <tr><td>7-1</td><td>上記の3業務以外に自動化したい作業はありますか？</td><td class="fill"></td></tr>
+  <tr><td>7-2</td><td>過去にシステム化・自動化を試みたことはありますか？<br>その際の課題は？</td><td class="fill"></td></tr>
+  <tr><td>7-3</td><td>本プロジェクトに対するご懸念・リスクとして感じていることはありますか？</td><td class="fill"></td></tr>
+</table>
+
+<div style="margin: 20px 0;">
+  <h3 style="border-bottom-color: #fde68a; color: #92400e;">自由メモ欄</h3>
+  <div style="width:100%; min-height:120px; border:1px solid #e2e8f0; border-radius:4px; margin-top:8px; background:#fffbeb; padding:8px;">
+    &nbsp;
+  </div>
+</div>
+
+<div class="footer">
+  ご協力ありがとうございます。ご記入いただいた内容をもとに、最適なシステム設計とお見積りを作成いたします。<br>
+  ご不明な点がございましたら、お気軽にお申し付けください。
+</div>
+
+</body>
+</html>

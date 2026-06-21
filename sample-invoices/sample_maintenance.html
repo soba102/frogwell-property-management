@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>請求書 - 修繕費</title>
+<style>
+  body { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; max-width: 600px; margin: 40px auto; font-size: 14px; color: #333; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #e65100; padding-bottom: 12px; margin-bottom: 20px; }
+  .header h1 { color: #e65100; font-size: 26px; margin: 0; letter-spacing: 6px; }
+  .issuer { font-size: 12px; color: #555; text-align: right; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th, td { padding: 8px 10px; border: 1px solid #ddd; text-align: left; }
+  th { background: #fff3e0; }
+  .total { font-size: 18px; font-weight: bold; text-align: right; margin-top: 20px; }
+  .footer { margin-top: 30px; font-size: 11px; color: #999; border-top: 1px solid #ddd; padding-top: 10px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>請求書</h1>
+  <div class="issuer">
+    <strong>ABCメンテナンスサービス</strong><br>
+    No. 15, Jalan PJU 5/1, Kota Damansara<br>
+    登録番号: 1234567-A
+  </div>
+</div>
+
+<table>
+  <tr><th style="width:35%;">請求書番号</th><td>INV-ABC-2026-0847</td></tr>
+  <tr><th>請求日</th><td>2026年5月14日</td></tr>
+  <tr><th>対象物件</th><td>Unit B-102, The Residence, Mont Kiara</td></tr>
+  <tr><th>宛先</th><td>物件管理事務所 御中</td></tr>
+</table>
+
+<table>
+  <tr><th style="width:8%;">No.</th><th>内容</th><th style="text-align:right; width:25%;">金額 (RM)</th></tr>
+  <tr><td>1</td><td>配管修理 - キッチンシンク配管交換</td><td style="text-align:right;">350.00</td></tr>
+  <tr><td>2</td><td>部品 - PVC配管継手・接続部材</td><td style="text-align:right;">85.00</td></tr>
+  <tr><td>3</td><td>作業費（2時間）</td><td style="text-align:right;">150.00</td></tr>
+  <tr><td colspan="2" style="text-align:right; font-weight:bold;">小計</td><td style="text-align:right;">585.00</td></tr>
+  <tr><td colspan="2" style="text-align:right;">消費税 SST（6%）</td><td style="text-align:right;">35.10</td></tr>
+  <tr><td colspan="2" style="text-align:right;">端数調整</td><td style="text-align:right;">-0.10</td></tr>
+  <tr style="font-weight:bold; background:#fff3e0;">
+    <td colspan="2" style="text-align:right;">合計</td><td style="text-align:right;">620.00</td></tr>
+</table>
+
+<div class="total">ご請求金額: RM 620.00</div>
+
+<div class="footer">
+  振込先: Maybank / 口座番号: 5621-7483-9102 / 口座名義: ABC Maintenance Services<br>
+  お支払い条件: 請求日より30日以内。ありがとうございました。
+</div>
+</body>
+</html>
