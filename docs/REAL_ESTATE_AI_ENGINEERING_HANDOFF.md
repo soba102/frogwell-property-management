@@ -492,8 +492,9 @@ spreadsheets, drive, gmail.send, script.external_request, script.scriptapp
 
 ### Phase 2: 問い合わせ自動化
 
-- `docs/05_問い合わせ自動化_企画.html` 参照
-- メール先行 → WhatsApp/LINE はアダプター pattern
+- 詳細企画: [`docs/05_問い合わせ自動化_企画.md`](./05_問い合わせ自動化_企画.md)（実装向け）
+- 提案資料: [`docs/05_問い合わせ自動化_企画.html`](./05_問い合わせ自動化_企画.html)（先方向け）
+- メール MVP（Gmail ラベル + 分類 + チケット）→ WhatsApp アダプタ接続
 - ナレッジベース（仲介）＋ AI 分類＋チケット（テナント）
 
 ### Phase 3: アーキテクチャ見直し（必要に応じて）
