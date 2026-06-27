@@ -39,6 +39,7 @@ const CONFIG = {
   TENANT_HEADERS: [
     '物件名', '区画番号', 'テナント名', '契約開始', '契約終了',
     '更新期間', '解約予告(月)', '月間家賃 (RM)', '敷金Security (RM)', '敷金Utility (RM)', '備考',
+    'メール', 'WhatsApp番号',
   ],
 
   RECONCILE_HEADERS: [

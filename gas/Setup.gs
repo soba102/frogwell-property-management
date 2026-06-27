@@ -18,6 +18,9 @@ function setupAllSheets() {
   insertSampleMasterData_(ss);
   insertDefaultSettings_(ss);
 
+  // 問い合わせ対応（Phase 2）のシート・設定キーも作成する
+  if (typeof setupInquirySheets === 'function') setupInquirySheets();
+
   // デフォルトの「シート1」があれば削除
   const sheet1 = ss.getSheetByName('シート1') || ss.getSheetByName('Sheet1');
   if (sheet1 && ss.getSheets().length > 1) {
@@ -183,12 +186,12 @@ function insertSampleMasterData_(ss) {
   // テナントマスター（先方フォーマット：物件名＋区画番号がキー。物件マスターと整合）
   var tenantSheet = createSheetWithHeaders_(ss, CONFIG.SHEET_NAMES.TENANTS, CONFIG.TENANT_HEADERS);
   if (tenantSheet.getLastRow() <= 1) {
-    // 物件名, 区画番号, テナント名, 契約開始, 契約終了, 更新期間, 解約予告(月), 月間家賃, 敷金S, 敷金U, 備考
+    // 物件名, 区画番号, テナント名, 契約開始, 契約終了, 更新期間, 解約予告(月), 月間家賃, 敷金S, 敷金U, 備考, メール, WhatsApp番号
     var tenants = [
-      ['The Mews',          'A-32-2',  'Tanaka Yuki',    '2025/01/01', '2026/12/31', '1年更新', 2, 3500, 3500, 0,   ''],
-      ['St Mary Residence', 'A3-19-2', 'Lim Wei Ming',   '2025/03/01', '2026/02/28', '1年更新', 2, 2800, 2800, 0,   ''],
-      ['M City',            '2-29-17', 'Siti Nurhaliza', '2024/06/01', '2026/05/31', '2年更新', 3, 4200, 4200, 0,   ''],
-      ['Vivo Residence',    'B-29-3A', 'Raj Kumar',      '2025/07/01', '2026/06/30', '1年更新', 2, 2500, 2500, 500, ''],
+      ['The Mews',          'A-32-2',  'Tanaka Yuki',    '2025/01/01', '2026/12/31', '1年更新', 2, 3500, 3500, 0,   '', 'tanaka.yuki@example.com', '+60123456701'],
+      ['St Mary Residence', 'A3-19-2', 'Lim Wei Ming',   '2025/03/01', '2026/02/28', '1年更新', 2, 2800, 2800, 0,   '', 'lim.weiming@example.com', '+60123456702'],
+      ['M City',            '2-29-17', 'Siti Nurhaliza', '2024/06/01', '2026/05/31', '2年更新', 3, 4200, 4200, 0,   '', 'siti.n@example.com',      '+60123456703'],
+      ['Vivo Residence',    'B-29-3A', 'Raj Kumar',      '2025/07/01', '2026/06/30', '1年更新', 2, 2500, 2500, 500, '', 'raj.kumar@example.com',   '+60123456704'],
     ];
     tenantSheet.getRange(2, 1, tenants.length, tenants[0].length).setValues(tenants);
     result.tenants = tenants.length;

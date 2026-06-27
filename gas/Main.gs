@@ -18,6 +18,11 @@ function onOpen() {
     .addSeparator()
     .addItem('レポート一括メール送信', 'runSendAllReports')
     .addSeparator()
+    .addItem('問い合わせ機能セットアップ', 'runSetupInquiry')
+    .addItem('問い合わせ受信チェック（Gmail）', 'runProcessEmailInbox')
+    .addItem('選択チケットに返信送信', 'runReplyActiveTicket')
+    .addItem('選択チケットを完了にする', 'runMarkActiveTicketDone')
+    .addSeparator()
     .addItem('ダッシュボード更新', 'runUpdateDashboard')
     .addToUi();
 }
@@ -137,4 +142,49 @@ function runSendAllReports() {
 function runUpdateDashboard() {
   updateDashboard();
   SpreadsheetApp.getUi().alert('ダッシュボードを更新しました。');
+}
+
+/* ===== 問い合わせ対応（Phase 2） ===== */
+
+function runSetupInquiry() {
+  const ui = SpreadsheetApp.getUi();
+  try {
+    setupInquirySheets();
+    ui.alert('問い合わせ機能セットアップ完了',
+      '「問い合わせ管理」「問い合わせ履歴」「ナレッジ_FAQ」シートと設定キーを用意しました。\n'
+        + '「設定」シートで通知先・自動返信・Twilio（WhatsApp利用時）を入力してください。',
+      ui.ButtonSet.OK);
+  } catch (e) {
+    ui.alert('エラー', e.message, ui.ButtonSet.OK);
+  }
+}
+
+function runProcessEmailInbox() {
+  const ui = SpreadsheetApp.getUi();
+  try {
+    const count = processEmailInbox();
+    ui.alert('問い合わせ受信チェック完了', count + ' 件の問い合わせを取り込みました。', ui.ButtonSet.OK);
+  } catch (e) {
+    ui.alert('エラー', e.message, ui.ButtonSet.OK);
+  }
+}
+
+function runReplyActiveTicket() {
+  const ui = SpreadsheetApp.getUi();
+  try {
+    const id = replyActiveTicket();
+    ui.alert('送信完了', id + ' に返信を送信しました。', ui.ButtonSet.OK);
+  } catch (e) {
+    ui.alert('エラー', e.message, ui.ButtonSet.OK);
+  }
+}
+
+function runMarkActiveTicketDone() {
+  const ui = SpreadsheetApp.getUi();
+  try {
+    const id = markActiveTicketDone();
+    ui.alert('完了', id + ' を完了にしました。', ui.ButtonSet.OK);
+  } catch (e) {
+    ui.alert('エラー', e.message, ui.ButtonSet.OK);
+  }
 }
